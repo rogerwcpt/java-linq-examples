@@ -1,19 +1,18 @@
 
-101 LINQ Samples in Python
+101 LINQ Samples in Java (STILL A WORK IN PROGRESS)
 ========================
 
-Port of the [C# 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) rewritten into modern C# syntax and then also using Python, using built in methods where possible.
+Port of the [C# 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) rewritten into modern C# syntax and then also using Java, using built in methods where possible.
 
-Python doesn't really lend itself well to functional programming because is functional methods are really procedural.  There is support for lambda expressions, but you can't chain or compose your your functional operations very well as you will see compare to C# equivalent below.
+Most of Java's functional methods are available via `stream()`
 
-Source for both C# and Python are included in the [src](src) folder in this repository
+Source for both C# and Java are included in the [src](src) folder in this repository
 
 - To run the respective C# projects (*.csproj*), open the containing folder in [Visual Studio Code](https://code.visualstudio.com/) use the Debug command 
-- To run the respective Python files (*.py*), open the file in [Visual Studio Code](https://code.visualstudio.com/) use the *Run Python File in Terminal* right click menu command (requirses the Python extension)
 
-[do_thing_to(x) for x in source if your_filter(x)]
+  
 ### Operation Comparison Matrix
-|Operation|C#|python|Comment|
+|Operation|C#|Java|Comment|
 |---------|--|----|-------|
 |**Filter**|`Where`|`(x for x in sequence if fiter(x))`|Can also use `filter(f(x), sequence)`|
 |**Projection**|`Select`|`(f(x) for x in sequence)`|Can also use `map(f(x), sequence)`|
@@ -80,9 +79,9 @@ Source for both C# and Python are included in the [src](src) folder in this repo
 
 ##  Side-by-side - C# LINQ vs python functional collections
 
-For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **python** translation. 
+For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **Java** translation. 
 
-  - The **Output** shows the console output of running the **python** sample. 
+  - The **Output** shows the console output of running the **Java** sample. 
   - Outputs ending with `...` illustrates only a partial response is displayed. 
   - The source-code for C# and python utils used are included once under the first section they're used in.
   - The C# ObjectDumper util used is downloadable from MSDN - [ObjectDumper.zip](http://code.msdn.microsoft.com/Visual-Studio-2008-C-d295cdba/file/46086/1/ObjectDumper.zip)
