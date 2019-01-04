@@ -2,6 +2,10 @@ package app;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello Java");
+
+        // Filters
+        // linq.LinqFilters.Linq1();
+        // linq.LinqFilters.Linq2();
+        linq.LinqFilters.Linq3();
     }
 }

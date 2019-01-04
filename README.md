@@ -109,15 +109,20 @@ static void Linq1()
     lowNums.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
-def linq1():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+```java
+#java
+public static void Linq1() {
+    int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    low_nums = (x for x in numbers if x < 5)
+    List<Integer> lownumbers = Arrays
+            .stream(numbers)
+            .boxed()
+            .filter(x -> x < 5)
+            .collect(Collectors.toList());
 
-    print("Numbers < 5:")
-    shared.printN(low_nums)
+    System.out.println("Numbers < 5:");
+    lownumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -138,20 +143,22 @@ static void Linq2()
 
     var soldOutProducts = products.Where(p => p.UnitsInStock == 0);
 
-    Console.WriteLine("Sold out products:");
-    soldOutProducts.ForEach(x => Console.WriteLine($"{x.ProductName} is sold out!"));
+    
 }
 ```
-```python
-#python
-def linq2():
-    products = shared.getProductList()
+```java
+#java
+public static void Linq2() {
+    List<Product> products = Data.getProductList();
 
-    sold_out_products = (x for x in products if x.UnitsInStock == 0)
+    List<Product> sold_out_products = products
+            .stream()
+            .filter(p -> p.unitsInStock == 0)
+            .collect(Collectors.toList());
 
-    print("Sold out products:")
-    for item in sold_out_products:
-        print("%s is sold out!" % item.ProductName)
+    System.out.println("Sold out products:");
+    sold_out_products.forEach(p -> System.out.println(String.format("%s is sold out!", p.productName)));
+}
 ```
 #### Output
 
