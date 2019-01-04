@@ -1,8 +1,10 @@
 package support;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -92,12 +94,25 @@ public class Data {
         return Arrays.asList(products);
     }
 
-//    public List<Customer> getCustomerList() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        File file = new File("data/car.json");
-//
-//        Car car = objectMapper.readValue(file, Car.class);
-//    }
+    public static List<Customer> getCustomerList() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String dir = System.getProperty("user.dir");
+        File file = new File(dir + "/../../../Customers.json");
+
+        Customers result = null;
+        try {
+            result = objectMapper.readValue(file, Customers.class);
+
+            result.customers.forEach(c -> {
+                if (c.ordersList != null) {
+                    c.orders = c.ordersList.orderList;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result.customers;
+    }
 
 }

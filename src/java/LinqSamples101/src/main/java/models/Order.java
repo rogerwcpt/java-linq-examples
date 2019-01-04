@@ -1,18 +1,16 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Order {
 
+    @JsonProperty("id")
     public Integer orderId;
+    @JsonProperty("orderdate")
     public Date orderDate;
     public Double total;
-
-    public Order(Integer orderId, Date orderDate, Double total) {
-        this.orderId = orderId;
-        this.orderDate = orderDate;
-        this.total = total;
-    }
 
     @Override
     public String toString() {

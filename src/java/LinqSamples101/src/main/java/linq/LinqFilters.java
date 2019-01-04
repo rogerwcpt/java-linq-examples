@@ -1,5 +1,6 @@
 package linq;
 
+import models.Customer;
 import models.Product;
 import support.Data;
 
@@ -47,6 +48,17 @@ public class LinqFilters {
     }
 
     public static void Linq4() {
+        List<Customer> customers = Data.getCustomerList();
 
+        List<Customer> waCustomers = customers
+                .stream()
+                .filter(c -> "WA".equals(c.region))
+                .collect(Collectors.toList());
+
+        System.out.println("Customers from Washington and their orders:");
+        waCustomers.forEach(c -> {
+            System.out.println(String.format("%s : %s", c.customerId, c.companyName));
+            c.orders.forEach(o -> System.out.println(String.format("     Order %s: %s\"", o.orderId, o.orderDate)));
+        });
     }
 }

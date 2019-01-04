@@ -14,7 +14,7 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 ### Operation Comparison Matrix
 |Operation|C#|Java|Comment|
 |---------|--|----|-------|
-|**Filter**|`Where`|`(x for x in sequence if fiter(x))`|Can also use `filter(f(x), sequence)`|
+|**Filter**|`Where`|`stream().filter(lambda)`|native types require `Arrays.stream(int[]).boxed()`|
 |**Projection**|`Select`|`(f(x) for x in sequence)`|Can also use `map(f(x), sequence)`|
 ||`SelectMany`|`(f(x, y) for x in sequence1 for y in sequence2)`|||
 |**Partitioning**|`Take(n)`|`array[:n]`||
@@ -240,13 +240,16 @@ def linq4():
 #### Output
 
     Customers from Washington and their orders:
-    Customer LAZYK: Lazy K Kountry Store
-      Order 10482: 1997-03-21T00:00:00
-      Order 10545: 1997-05-22T00:00:00
-    Customer TRAIH: Trail's Head Gourmet Provisioners
-      Order 10574: 1997-06-19T00:00:00
-      Order 10577: 1997-06-23T00:00:00
-      Order 10822: 1998-01-08T00:00:00
+    LAZYK : Lazy K Kountry Store
+        Order 10482: Fri Mar 21 02:00:00 SAST 1997"
+        Order 10545: Thu May 22 02:00:00 SAST 1997"
+    TRAIH : Trail's Head Gourmet Provisioners
+        Order 10574: Thu Jun 19 02:00:00 SAST 1997"
+        Order 10577: Mon Jun 23 02:00:00 SAST 1997"
+        Order 10822: Thu Jan 08 02:00:00 SAST 1998"
+    WHITC : White Clover Markets
+        Order 10269: Wed Jul 31 02:00:00 SAST 1996"
+        Order 10344: Fri Nov 01 02:00:00 SAST 1996"
     ...
 
 ### linq5: Where - Indexed
