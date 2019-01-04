@@ -4,8 +4,6 @@
 
 Port of the [C# 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) rewritten into modern C# syntax and then also using Java, using built in methods where possible.
 
-Most of Java's functional methods are available via `stream()`
-
 Source for both C# and Java are included in the [src](src) folder in this repository
 
 - To run the respective C# projects (*.csproj*), open the containing folder in [Visual Studio Code](https://code.visualstudio.com/) use the Debug command 
@@ -14,9 +12,9 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 ### Operation Comparison Matrix
 |Operation|C#|Java|Comment|
 |---------|--|----|-------|
-|**Filter**|`Where`|`stream().filter(lambda)`|native types require `Arrays.stream(int[]).boxed()`|
-|**Projection**|`Select`|`(f(x) for x in sequence)`|Can also use `map(f(x), sequence)`|
-||`SelectMany`|`(f(x, y) for x in sequence1 for y in sequence2)`|||
+|**Filter**|`Where`|`filter(lambda)`|Native types require `Arrays.stream(int[]).boxed()`|
+|**Projection**|`Select`|`map(lambda)`|Native types require Arrays.stream(int[]).boxed()`|
+||`SelectMany`|`flatmap(lambda)`|||
 |**Partitioning**|`Take(n)`|`array[:n]`||
 ||`TakeWhile(predicate)`|`takewhile(predicate)`|`from itertools import takewhile`|
 ||`Skip(n)`|`array[n:]`||
@@ -61,9 +59,9 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 ||`SequenceEqual(IEnumerable)`|`list1==list2`||
 
 #### Source
-|Operation/Section|Python Source|C# Source|
+|Operation/Section|Java Source|C# Source|
 |-----------------|-------------|---------|
-|[Filter](#linq1-where---simple-1)|[linq-restrictions.py](src/python/linq-restrictions.py)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
+|[Filter](#linq1-where---simple-1)|[LinqFilters.java](/src/java/LinqSamples101/src/main/java/linq/LinqFilters.java)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
 |[Projection](#linq---projection-operators)|[linq-projections.py](src/python/linq-projections.py)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
 |[Partitioning](#linq---partitioning-operators)|[linq-partitions.py](src/python/linq-partitions.py)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
 |[Ordering](#linq---ordering-operators)|[linq-ordering.py](src/python/linq-ordering.py)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
@@ -82,15 +80,13 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **Java** translation. 
 
   - The **Output** shows the console output of running the **Java** sample. 
+  - Java 10 is used here for the use of [Anonymous Classes as shown here](https://stackoverflow.com/a/51210871/168925), although `stream()`, wich is used mostly in these functional examples, used in functional programming, was introduced in Java 8.
+  - The Java 10 var keyword is used for brevity of declaring types
   - Outputs ending with `...` illustrates only a partial response is displayed. 
   - The source-code for C# and python utils used are included once under the first section they're used in.
   - The C# ObjectDumper util used is downloadable from MSDN - [ObjectDumper.zip](http://code.msdn.microsoft.com/Visual-Studio-2008-C-d295cdba/file/46086/1/ObjectDumper.zip)
-  - Where I haven't been able to figure out the Python implemention, I've created an empty function like this:
+
   
-```python
-def f:
-    pass
-```
 LINQ - Filter Operators
 -----------------------
 
@@ -112,15 +108,12 @@ static void Linq1()
 ```java
 //java
 public static void Linq1() {
-    int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var numbers = new int[]{5, 4, 1, 3, 9, 8, 6, 7, 2, 0};
 
-    List<Integer> lownumbers = Arrays
-            .stream(numbers)
-            .boxed()
-            .filter(x -> x < 5)
-            .collect(Collectors.toList());
+    var lownumbers = Arrays.stream(numbers)
+            .filter(x -> x < 5);
 
-    System.out.println("Numbers < 5:");
+    print("Numbers < 5:");
     lownumbers.forEach(System.out::println);
 }
 ```
@@ -143,21 +136,20 @@ static void Linq2()
 
     var soldOutProducts = products.Where(p => p.UnitsInStock == 0);
 
-    
+    Console.WriteLine("Sold out products:");
+    soldOutProducts.ForEach(x => Console.WriteLine($"{x.ProductName} is sold out!"));
 }
 ```
 ```java
 //java
 public static void Linq2() {
-    List<Product> products = Data.getProductList();
+    var products = Data.getProductList();
 
-    List<Product> sold_out_products = products
-            .stream()
-            .filter(p -> p.unitsInStock == 0)
-            .collect(Collectors.toList());
+    var sold_out_products = products.stream()
+            .filter(p -> p.unitsInStock == 0);
 
-    System.out.println("Sold out products:");
-    sold_out_products.forEach(p -> System.out.println(String.format("%s is sold out!", p.productName)));
+    print("Sold out products:");
+    sold_out_products.forEach(p -> print("%s is sold out!", p.productName));
 }
 ```
 #### Output
@@ -186,15 +178,13 @@ public static void Linq3()
 ```java
 //java
 public static void Linq3() {
-    List<Product> products = Data.getProductList();
+    var products = Data.getProductList();
 
-    List<Product> sold_out_products = products
-            .stream()
-            .filter(p -> p.unitsInStock > 0 && p.unitPrice > 3.00)
-            .collect(Collectors.toList());
+    var sold_out_products = products.stream()
+            .filter(p -> p.unitsInStock > 0 && p.unitPrice > 3.00);
 
-    System.out.println("In-stock products that cost more than 3.00:");
-    sold_out_products.forEach(p -> System.out.println(String.format("%s is in stock and costs more than 3.00.", p.productName)));
+    print("In-stock products that cost more than 3.00:");
+    sold_out_products.forEach(p -> print("%s is in stock and costs more than 3.00.", p.productName));
 }
 ```
 #### Output
@@ -229,17 +219,15 @@ static void Linq4()
 ```java
 //java
 public static void Linq4() {
-    List<Customer> customers = Data.getCustomerList();
+    var customers = Data.getCustomerList();
 
-    List<Customer> waCustomers = customers
-            .stream()
-            .filter(c -> "WA".equals(c.region))
-            .collect(Collectors.toList());
+    var waCustomers = customers.stream()
+            .filter(c -> "WA".equals(c.region));
 
-    System.out.println("Customers from Washington and their orders:");
+    print("Customers from Washington and their orders:");
     waCustomers.forEach(c -> {
-        System.out.println(String.format("%s : %s", c.customerId, c.companyName));
-        c.orders.forEach(o -> System.out.println(String.format("     Order %s: %s\"", o.orderId, o.orderDate)));
+        print(String.format("%s : %s", c.customerId, c.companyName));
+        c.orders.forEach(o -> print("     Order %s: %s\"", o.orderId, o.orderDate));
     });
 }
 ```
@@ -275,16 +263,17 @@ static void Linq5()
 ```java
 //java
 public static void Linq5() {
-    String[] digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+    var digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    List<AbstractMap.SimpleEntry<Integer, String>> shortDigits =
-            IntStream.range(0, digits.length)
-            .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, digits[index]))
-            .filter(entry -> entry.getValue().length() < entry.getKey())
-            .collect(Collectors.toList());
+    var shortDigits = IntStream.range(0, digits.length)
+            .mapToObj(index -> new Object() {
+                int Index = index;
+                String Digit = digits[index];
+            })
+            .filter(o -> o.Digit.length() < o.Index);
 
-    System.out.println("Short digits:");
-    shortDigits.forEach(entry -> System.out.println(String.format("he word %s is shorter than its value", entry.getValue())));
+    print("Short digits:");
+    shortDigits.forEach(o -> print("The word %s is shorter than its value", o.Digit));
 }
 ```
 #### Output
@@ -304,25 +293,28 @@ LINQ - Projection Operators
 >This sample projects a sequence of ints 1+ higher than those in an existing array of ints.
 ```csharp
 //c#
-    static void Linq6()
-    {
-        var numbers = new[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+static void Linq6()
+{
+    var numbers = new[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-        var numsPlusOne = numbers.Select(n => n + 1);
+    var numsPlusOne = numbers.Select(n => n + 1);
 
-        Console.WriteLine("Numbers + 1:");
-        numsPlusOne.ForEach(Console.WriteLine);
-    }
+    Console.WriteLine("Numbers + 1:");
+    numsPlusOne.ForEach(Console.WriteLine);
+}
 ```
-```python
-#python
-def linq6():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+```java
+//java
+public static void Linq6() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    nums_plus_one = (n+1 for n in numbers)
+    var lownumbers = Arrays.stream(numbers)
+            .boxed()
+            .map(n -> n +1);
 
-    print("Numbers + 1:")
-    shared.printN(nums_plus_one)
+    print("Numbers +1:");
+    lownumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -352,15 +344,17 @@ static void Linq7()
     productNames.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
-def linq7():
-    products = shared.getProductList()
+```java
+//java
+public static void  Linq7() {
+    var products = Data.getProductList();
 
-    product_names = (p.ProductName for p in products)
+    var productNames = products.stream()
+            .map(p -> p.productName);
 
-    print("Product Names:")
-    shared.printS(product_names)
+    print("Product Names:");
+    productNames.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -387,16 +381,19 @@ static void Linq8()
     textNums.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
-def linq8():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-    strings = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+```java
+//java
+public static void Linq8() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var strings = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    text_nums = (strings[n] for n in numbers)
+    var stringNums = Arrays.stream(numbers)
+            .boxed()
+            .map(n -> strings[n]);
 
-    print("Number strings:")
-    shared.printS(text_nums)
+    print("Number strings:");
+    stringNums.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -430,17 +427,19 @@ static void Linq9()
     upperLowerWords.ForEach(ul => Console.WriteLine($"Uppercase: {ul.Upper}, Lowercase: {ul.Lower}"));
 }
 ```
-```python
-#python
-def linq9():
-    words = ["aPPLE", "BlUeBeRrY", "cHeRry"]
+```java
+//java
+public static void Linq9() {
+    var words = new String[] { "aPPLE", "BlUeBeRrY", "cHeRry" };
 
-    upper_lower_words = (SimpleNamespace(Upper=w.upper(),
-                                         Lower=w.lower())
-                         for w in words)
+    var upperLowerWords = Arrays.stream(words)
+            .map(w -> new Object() {
+                String upper = w.toUpperCase();
+                String lower = w.toLowerCase();
+            });
 
-    for word in upper_lower_words:
-        print("Uppercase: %s, Lowercase: %s" % (word.Upper, word.Lower))
+    upperLowerWords.forEach(word -> print("Uppercase: %s, Lowercase: %s", word.upper, word.lower));
+}
 ```
 #### Output
 
@@ -467,18 +466,21 @@ static void Linq10()
     digitOddEvens.ForEach(d => Console.WriteLine($"The digit {d.Digit} is {(d.Even ? "even" : "odd")}."));
 }
 ```
-```python
-#python
-def linq10():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-    strings = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-    
-    digit_odd_evens = (SimpleNamespace(Digit=strings[n],
-                                       Even=(n % 2 == 0))
-                       for n in numbers)
+```java
+//java
+public static void Linq10() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var strings = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    for d in digit_odd_evens:
-        print("The digit %s is %s" % (d.Digit, 'even' if d.Even else 'odd'))
+    var digitOddEvens = Arrays.stream(numbers)
+            .boxed()
+            .map(n -> new Object() {
+                String Digit = strings[n];
+                Boolean Even = n % 2 == 0;
+            });
+
+    digitOddEvens.forEach(o -> print("The digit %s is %s", o.Digit, o.Even ? "even" : "odd"));
+}
 ```
 #### Output
 
@@ -497,35 +499,37 @@ def linq10():
 >This sample projects a sequence containing some properties of Products, including UnitPrice which is renamed to Price in the resulting type.
 ```csharp
 //c#
-    static void Linq11()
-    {
-        var products = GetProductList();
+static void Linq11()
+{
+    var products = GetProductList();
 
-        var productInfos = products.Select(p => 
-            new
-            {
-                p.ProductName, 
-                p.Category, 
-                Price = p.UnitPrice
+    var productInfos = products.Select(p => 
+        new
+        {
+            p.ProductName, 
+            p.Category, 
+            Price = p.UnitPrice
+        });
+
+    Console.WriteLine("Product Info:");
+    productInfos.ForEach(productInfo => Console.WriteLine($"{productInfo.ProductName} is in the category {productInfo.Category} and costs {productInfo.Price} per unit."));
+}
+```
+```java
+//java
+public static void Linq11() {
+    var products = Data.getProductList();
+
+    var productInfos = products.stream()
+            .map(p -> new Object() {
+                String ProductName = p.productName;
+                String Category = p.category;
+                Double Price = p.unitPrice;
             });
 
-        Console.WriteLine("Product Info:");
-        productInfos.ForEach(productInfo => Console.WriteLine($"{productInfo.ProductName} is in the category {productInfo.Category} and costs {productInfo.Price} per unit."));
-    }
-```
-```python
-#python
-def linq11():
-    products = shared.getProductList()
-
-    product_info = (SimpleNamespace(ProductName=p.ProductName,
-                                    Category=p.Category,
-                                    Price=p.UnitPrice)
-                    for p in products)
-
-    print("Product Info:")
-    for product in product_info:
-        print("%s is in the category %s and costs %.2f per unit." % (product.ProductName, product.Category, product.Price))
+    print("Product Info:");
+    productInfos.forEach(product -> print("%s is in the category %s and costs %.2f per unit.", product.ProductName, product.Category, product.Price));
+}
 ```
 #### Output
 
@@ -554,40 +558,34 @@ static void Linq12()
     numsInPlace.ForEach(n => Console.WriteLine($"{n.Num}: {n.InPlace}"));
 }
 ```
-```python
-#python
-def linq12():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+```java
+//java
+public static void Linq13() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    index = 0
+    var lowNums = Arrays.stream(numbers)
+            .boxed()
+            .filter(n -> n < 5)
+            .map(n -> digits[n]);
 
-    def digit_equals_index(digit):
-        nonlocal index
-        result = digit == index
-        index += 1
-        return result
-
-    nums_in_place = (SimpleNamespace(Num=num,
-                                     InPlace=digit_equals_index(num))
-                     for num in numbers)
-
-    print("Number: In-place?")
-    for n in nums_in_place:
-        print("%d: %s" % (n.Num, n.InPlace))
+    print("Numbers < 5:");
+    lowNums.forEach(System.out::println);
+}
 ```
 #### Output
 
     Number: In-place?
-    5: False
-    4: False
-    1: False
-    3: True
-    9: False
-    8: False
-    6: True
-    7: True
-    2: False
-    0: False
+    5: false
+    4: false
+    1: false
+    3: true
+    9: false
+    8: false
+    6: true
+    7: true
+    2: false
+    0: false
 
 ### linq13: Select - Filtered
 >This sample first filters, then projects to make a simple query that returns the text form of each digit less than 5.
@@ -606,16 +604,21 @@ static void Linq13()
     lowNums.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
-def linq13():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+```java
+//java
+public static void Linq13() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+    var digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    result = (digits[n] for n in numbers if n < 5)
+    var lowNums = Arrays.stream(numbers)
+            .boxed()
+            .filter(n -> n < 5)
+            .map(n -> digits[n])
+            .collect(Collectors.toList());
 
-    print("Numbers < 5:")
-    shared.printS(result)
+    print("Numbers < 5:");
+    lowNums.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -643,17 +646,11 @@ static void Linq14()
     pairs.ForEach(pair => Console.WriteLine("{0} is less than {1}", pair.a, pair.b));
 }
 ```
-```python
-#python
-def linq14():
-    numbers_a = [0, 2, 4, 5, 6, 8, 9]
-    numbers_b = [1, 3, 5, 7, 8]
-
-    pairs = ((a, b) for a in numbers_a for b in numbers_b if (a < b))
-
-    print("Pairs where a < b:")
-    for p in pairs:
-        print("%d is less than %d" % (p[0], p[1]))
+```java
+//java
+public static void Linq14() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -697,21 +694,11 @@ static void Linq15()
     ObjectDumper.Write(orders);
 }
 ```
-```python
-#python
-def linq15():
-    customers = shared.getCustomerList()
-
-    orders_less_than_500 = ((customer, order)
-                            for customer in customers
-                            for order in customer.Orders
-                            if order.Total < 500.00)
-    orders = (SimpleNamespace(customer_id=x[0].CustomerID,
-                              order_id=x[1].OrderID,
-                              total=x[1].Total)
-              for x in orders_less_than_500)
-
-    shared.print_namespace(orders)
+```java
+//java
+public static void Linq15() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -743,23 +730,11 @@ static void Linq16()
     ObjectDumper.Write(orders);
 }
 ```
-```python
-#python
-def linq16():
-    customers = shared.getCustomerList()
-
-    the_date = datetime.datetime(1998, 1, 1)
-
-    order_greater_than_date = ((customer, order)
-                            for customer in customers
-                            for order in customer.Orders
-                            if order.OrderDate > the_date)
-    orders = (SimpleNamespace(customer_id=x[0].CustomerID,
-                              order_id=x[1].OrderID,
-                              orderDate=x[1].OrderDate)
-              for x in order_greater_than_date)
-
-    shared.print_namespace(orders)
+```java
+//java
+public static void Linq16() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -792,21 +767,11 @@ static void Linq17()
     ObjectDumper.Write(orders);
 }
 ```
-```python
-#python
-def linq17():
-    customers = shared.getCustomerList()
-
-    orders_greater_than_2000 = ((customer, order)
-                                for customer in customers
-                                for order in customer.Orders
-                                if order.Total > 2000.00)
-    orders = (SimpleNamespace(customer_id=x[0].CustomerID,
-                              order_id=x[1].OrderID,
-                              total=x[1].Total)
-              for x in orders_greater_than_2000)
-    
-    shared.print_namespace(orders)
+```java
+//java
+public static void Linq17() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -840,23 +805,11 @@ static void Linq18()
     ObjectDumper.Write(orders);
 }
 ```
-```python
-#python
-def linq18():
-    customers = shared.getCustomerList()
-
-    the_date = datetime.datetime(1998, 1, 1)
-
-    order_greater_than_date = ((customer, order)
-                               for customer in customers
-                               for order in customer.Orders
-                               if order.OrderDate > the_date)
-    orders = (SimpleNamespace(customer_id=x[0].CustomerID,
-                              order_id=x[1].OrderID,
-                              orderDate=x[1].OrderDate)
-              for x in order_greater_than_date)
-
-    shared.print_namespace(orders)
+```java
+//java
+public static void Linq18() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -882,22 +835,11 @@ public void Linq19()
     ObjectDumper.Write(customerOrders);
 }
 ```
-```python
-#python
-def linq19():
-    customers = shared.getCustomerList()
-
-    index = 0
-
-    def get_cust_index_func():
-        nonlocal index
-        index += 1
-        return index
-
-    customer_orders = ((cust, get_cust_index_func(), order) for cust in customers for order in cust.Orders)
-
-    for triplet in customer_orders:
-        print("Customer #%d has an order with OrderID %d" % (triplet[1], triplet[2].OrderID))
+```java
+//java
+public static void Linq19() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -930,8 +872,8 @@ static void Linq20()
     first3Numbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq20():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -971,8 +913,8 @@ static void Linq21()
     first3WAOrders.ForEach(ObjectDumper.Write);
 }
 ```
-```python
-#python
+```java
+//java
 def linq21():
     customers = shared.getCustomerList()
 
@@ -1012,8 +954,8 @@ static void Linq22()
     allButFirst4Numbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq22():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
     all_but_first4_numbers = numbers[4:]
@@ -1056,8 +998,8 @@ static void Linq23()
     ObjectDumper.Write(allButFirst2Orders);
 }
 ```
-```python
-#python
+```java
+//java
 def linq23():
     customers = shared.getCustomerList()
 
@@ -1109,8 +1051,8 @@ static void Linq24()
     firstNumbersLessThan6.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq24():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -1141,8 +1083,8 @@ static void Linq25()
     firstSmallNumbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq25():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -1179,8 +1121,8 @@ static void Linq26()
     allButFirst3Numbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq26():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -1214,8 +1156,8 @@ static void Linq27()
     laterNumbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq27():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -1262,8 +1204,8 @@ static void Linq28()
     sortedWords.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq28():
     words = ["cherry", "apple", "blueberry"]
 
@@ -1293,8 +1235,8 @@ static void Linq29()
     sortedWords.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq29():
     words = ["cherry", "apple", "blueberry"]
 
@@ -1323,8 +1265,8 @@ static void Linq30()
     ObjectDumper.Write(sortedProducts);
 }
 ```
-```python
-#python
+```java
+//java
 def linq30():
     products = shared.getProductList()
 
@@ -1354,8 +1296,8 @@ static void Linq31()
     ObjectDumper.Write(sortedWords); 
 }
 ```
-```python
-#python
+```java
+//java
 def linq31():
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
@@ -1386,8 +1328,8 @@ static void Linq32()
     sortedDoubles.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq32():
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
 
@@ -1418,8 +1360,8 @@ static void Linq33()
     ObjectDumper.Write(sortedProducts);
 }
 ```
-```python
-#python
+```java
+//java
 def linq33():
     products = shared.getProductList()
 
@@ -1449,8 +1391,8 @@ static void Linq34()
     ObjectDumper.Write(sortedWords);
 }
 ```
-```python
-#python
+```java
+//java
 def linq34():
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
@@ -1483,8 +1425,8 @@ static void Linq35()
     sortedDigits.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq35():
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
@@ -1522,8 +1464,8 @@ static void Linq36()
     ObjectDumper.Write(sortedWords);
 }
 ```
-```python
-#python
+```java
+//java
 def linq36():
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
@@ -1555,8 +1497,8 @@ public void Linq37()
     ObjectDumper.Write(sortedProducts); 
 }
 ```
-```python
-#python
+```java
+//java
 def linq37():
     products = shared.getProductList()
 
@@ -1593,8 +1535,8 @@ static void Linq38()
     ObjectDumper.Write(sortedWords);
 }
 ```
-```python
-#python
+```java
+//java
 def linq38():
     words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
 
@@ -1629,8 +1571,8 @@ static void Linq39()
     reversedIDigits.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq39():
     digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
@@ -1675,8 +1617,8 @@ static void Linq40()
     });
 }
 ```
-```python
-#python
+```java
+//java
 def linq40():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -1736,8 +1678,8 @@ static void Linq41()
     });
 }
 ```
-```python
-#python
+```java
+//java
 def linq41():
     words = ["blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese"]
 
@@ -1786,8 +1728,8 @@ static void Linq42()
     ObjectDumper.Write(orderGroups, 1); 
 }
 ```
-```python
-#python
+```java
+//java
 def linq42():
     products = shared.getProductList()
 
@@ -1846,8 +1788,8 @@ public void Linq43()
     ObjectDumper.Write(customerOrderGroups, 3); 
 } 
 ```
-```python
-#python
+```java
+//java
 def linq43():
     pass
 
@@ -1875,8 +1817,8 @@ static void Linq46()
     uniqueFactors.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq46():
     factors_of300 = [2, 2, 3, 5, 5]
 
@@ -1908,8 +1850,8 @@ static void Linq47()
     categoryNames.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq47():
     products = shared.getProductList()
 
@@ -1945,8 +1887,8 @@ static void Linq48()
     uniqueNumbers.ForEach(Console.WriteLine);
 }  
 ```
-```python
-#python
+```java
+//java
 def linq48():
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
@@ -1988,8 +1930,8 @@ static void Linq49()
     uniqueFirstChars.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq49():
     products = shared.getProductList()
     customers = shared.getCustomerList()
@@ -2045,8 +1987,8 @@ static void Linq50()
     commonNumbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq50():
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
@@ -2080,8 +2022,8 @@ static void Linq51()
     commonFirstChars.ForEach(Console.WriteLine);
 } 
 ```
-```python
-#python
+```java
+//java
 def linq51():
     products = shared.getProductList()
     customers = shared.getCustomerList()
@@ -2132,8 +2074,8 @@ static void Linq52()
     aOnlyNumbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq52():
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
@@ -2170,8 +2112,8 @@ static void Linq53()
     productOnlyFirstChars.ForEach(Console.WriteLine);
 }   
 ```
-```python
-#python
+```java
+//java
 def linq53():
     products = shared.getProductList()
     customers = shared.getCustomerList()
@@ -2214,8 +2156,8 @@ static void Linq54()
     }
 }
 ```
-```python
-#python
+```java
+//java
 def linq54():
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
   
@@ -2252,8 +2194,8 @@ static void Linq55()
     wordList.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq55():
     words = ["cherry", "apple", "blueberry"]
 
@@ -2290,8 +2232,8 @@ static void Linq56()
     Console.WriteLine("Bob's score: {0}", scoreRecordsDict["Bob"]);
 }
 ```
-```python
-#python
+```java
+//java
 def linq56():
     score_records = [{'Name': "Alice", 'Score': 50},
                      {'Name': "Bob", 'Score': 40},
@@ -2319,8 +2261,8 @@ static void Linq57()
     doubles.ForEach(Console.WriteLine);
 } 
 ```
-```python
-#python
+```java
+//java
 def linq57():
     numbers = [None, 1.0, "two", 3, "four", 5, "six", 7.0]
 
@@ -2352,8 +2294,8 @@ static void Linq58()
     ObjectDumper.Write(product12);
 }
 ```
-```python
-#python
+```java
+//java
 def linq58():
     products = shared.getProductList()
 
@@ -2378,8 +2320,8 @@ static void Linq59()
     Console.WriteLine("A string starting with 'o': {0}", startsWithO);
 }
 ```
-```python
-#python
+```java
+//java
 def linq59():
     strings = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
@@ -2404,8 +2346,8 @@ static void Linq61()
     Console.WriteLine(firstNumOrDefault);
 }
 ```
-```python
-#python
+```java
+//java
 def linq61():
     numbers = []
 
@@ -2430,8 +2372,8 @@ static void Linq62()
     Console.WriteLine("Product 789 exists: {0}", product789 != null);
 }
 ```
-```python
-#python
+```java
+//java
 def linq62():
     products = shared.getProductList()
 
@@ -2458,8 +2400,8 @@ static void Linq64()
     Console.WriteLine("Second number > 5: {0}", fourthLowNum);
 }           
 ```
-```python
-#python
+```java
+//java
 def linq64():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -2492,8 +2434,8 @@ static void Linq65()
     numbers.ForEach((n) => Console.WriteLine("The number {0} is {1}.", n.Number, n.OddEven));
 }
 ```
-```python
-#python
+```java
+//java
 def linq65():
     numbers = range(100, 150)
 
@@ -2529,8 +2471,8 @@ static void Linq66()
     numbers.ForEach(Console.WriteLine);
 }  
 ```
-```python
-#python
+```java
+//java
 def linq66():
     numbers = itertools.repeat(7, 10)
 
@@ -2566,8 +2508,8 @@ static void Linq67()
     Console.WriteLine($"There is a word in the list that contains 'ei': {iAfterE}");
 }
 ```
-```python
-#python
+```java
+//java
 def linq67():
     words = ["believe", "relief", "receipt", "field"]
 
@@ -2600,8 +2542,8 @@ static void Linq69()
     ObjectDumper.Write(productGroups, 1);
 }
 ```
-```python
-#python
+```java
+//java
 def linq69():
     pass
 
@@ -2624,8 +2566,8 @@ static void Linq70()
     Console.WriteLine($"The list contains only odd numbers: {onlyOdd}");
 }
 ```
-```python
-#python
+```java
+//java
 def linq70():
     numbers = [1, 11, 3, 19, 41, 65, 19]
 
@@ -2658,8 +2600,8 @@ static void Linq72()
     ObjectDumper.Write(productGroups, 1);
 }
 ```
-```python
-#python
+```java
+//java
 def linq72():
     pass
 ```
@@ -2686,8 +2628,8 @@ static void Linq73()
     Console.WriteLine($"There are {uniqueFactors} unique prime factors of 300.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq73():
     factors_of_300 = [2, 2, 3, 5, 5]
 
@@ -2712,8 +2654,8 @@ static void Linq74()
     Console.WriteLine($"There are {oddNumbers} odd numbers in the list.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq74():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -2744,8 +2686,8 @@ static void Linq76()
     ObjectDumper.Write(orderCounts);
 }
 ```
-```python
-#python
+```java
+//java
 def linq76():
     customers = shared.getCustomerList()
 
@@ -2786,8 +2728,8 @@ static void Linq77()
     ObjectDumper.Write(categoryCounts);
 }
 ```
-```python
-#python
+```java
+//java
 def linq77():
     products = shared.getProductList()
 
@@ -2824,8 +2766,8 @@ static void Linq78()
     Console.WriteLine($"The sum of the numbers is {numSum}.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq78():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -2850,8 +2792,8 @@ static void Linq79()
     Console.WriteLine($"There are a total of {totalChars} characters in these words.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq79():
     words = ["cherry", "apple", "blueberry"]
 
@@ -2883,8 +2825,8 @@ static void Linq80()
     ObjectDumper.Write(categories);
 }
 ```
-```python
-#python
+```java
+//java
 def linq80():
     products = shared.getProductList()
 
@@ -2922,8 +2864,8 @@ static void Linq81()
     Console.WriteLine($"The minimum number is {minNum}.");
 } 
 ```
-```python
-#python
+```java
+//java
 def linq81():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -2948,8 +2890,8 @@ static void Linq82()
     Console.WriteLine($"The shortest word is {shortestWord} characters long.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq82():
     words = ["cherry", "apple", "blueberry"]
 
@@ -2981,8 +2923,8 @@ static void Linq83()
     ObjectDumper.Write(categories);
 }
 ```
-```python
-#python
+```java
+//java
 def linq83():
     products = shared.getProductList()
 
@@ -3026,8 +2968,8 @@ static void Linq84()
     ObjectDumper.Write(categories, 1);
 }
 ```
-```python
-#python
+```java
+//java
 def linq84():
     pass
 ```
@@ -3055,8 +2997,8 @@ static void Linq85()
     Console.WriteLine($"The maximum number is {maxNum}.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq85():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -3081,8 +3023,8 @@ static void Linq86()
     Console.WriteLine($"The longest word is {longestLength} characters long.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq86():
     words = ["cherry", "apple", "blueberry"]
 
@@ -3114,8 +3056,8 @@ static void Linq87()
     ObjectDumper.Write(categories);
 }
 ```
-```python
-#python
+```java
+//java
 def linq87():
     products = shared.getProductList()
 
@@ -3160,8 +3102,8 @@ static void Linq88()
     ObjectDumper.Write(categories, 1);
 }
 ```
-```python
-#python
+```java
+//java
 def linq88():
     pass
 ```
@@ -3189,8 +3131,8 @@ static void Linq89()
     Console.WriteLine($"The average number is {averageNum}.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq89():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -3215,8 +3157,8 @@ static void Linq90()
     Console.WriteLine($"The average word length is {averageLength} characters.");
 }
 ```
-```python
-#python
+```java
+//java
 def linq90():
     words = ["cherry", "apple", "blueberry"]
     average_length = sum(len(w) for w in words) / float(len(words))
@@ -3247,8 +3189,8 @@ static void Linq91()
     ObjectDumper.Write(categories);
 }
 ```
-```python
-#python
+```java
+//java
 def linq91():
     pass
 ```
@@ -3276,8 +3218,8 @@ static void Linq92()
     Console.WriteLine($"Total product of all numbers: {product}");
 }
 ```
-```python
-#python
+```java
+//java
 def linq92():
     doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
 
@@ -3310,8 +3252,8 @@ static void Linq93()
     Console.WriteLine($"Ending balance: {endBalance}");
 }   
 ```
-```python
-#python
+```java
+//java
 def linq93():
     start_balance = 100.0
 
@@ -3347,8 +3289,8 @@ static void Linq94()
     allNumbers.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq94():
     numbers_a = [0, 2, 4, 5, 6, 8, 9]
     numbers_b = [1, 3, 5, 7, 8]
@@ -3392,8 +3334,8 @@ static void Linq95()
     allNames.ForEach(Console.WriteLine);
 }
 ```
-```python
-#python
+```java
+//java
 def linq95():
     products = shared.getProductList()
     customers = shared.getCustomerList()
@@ -3431,8 +3373,8 @@ static void Linq96()
     Console.WriteLine($"The sequences match: {match}");
 }
 ```
-```python
-#python
+```java
+//java
 def linq96():
     words_a = ["cherry", "apple", "blueberry"]
     words_b = ["cherry", "apple", "blueberry"]
@@ -3459,8 +3401,8 @@ static void Linq97()
     Console.WriteLine($"The sequences match: {match}");
 }   
 ```
-```python
-#python
+```java
+//java
 def linq97():
     words_a = ["cherry", "apple", "blueberry"]
     words_b = ["apple", "blueberry", "cherry"]
@@ -3495,8 +3437,8 @@ static void Linq99()
     simpleQuery.ForEach(item => Console.WriteLine($"v = {item}, i = {i}")); // now i is incremented          
 }
 ```
-```python
-#python
+```java
+//java
 def linq99():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -3544,8 +3486,8 @@ static void Linq100()
     immediateQuery.ForEach(item => Console.WriteLine($"v = {item}, i = {i}"));
 }
 ```
-```python
-#python
+```java
+//java
 def linq100():
     numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
 
@@ -3601,8 +3543,8 @@ static void Linq101()
     lowNumbers.ForEach(Console.WriteLine);
 }   
 ```
-```python
-#python
+```java
+//java
 def linq101():
     pass
 ```
