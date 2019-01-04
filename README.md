@@ -110,7 +110,7 @@ static void Linq1()
 }
 ```
 ```java
-#java
+//java
 public static void Linq1() {
     int[] numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
@@ -147,7 +147,7 @@ static void Linq2()
 }
 ```
 ```java
-#java
+//java
 public static void Linq2() {
     List<Product> products = Data.getProductList();
 
@@ -183,16 +183,19 @@ public static void Linq3()
     expensiveInStockProducts.ForEach(product => Console.WriteLine($"{product.ProductName} is in stock and costs more than 3.00."));
 }
 ```
-```python
-#python
-def linq3():
-    products = shared.getProductList()
+```java
+//java
+public static void Linq3() {
+    List<Product> products = Data.getProductList();
 
-    expensive_in_stock_products = (x for x in products if x.UnitsInStock > 0 and x.UnitPrice > 3.0000)
+    List<Product> sold_out_products = products
+            .stream()
+            .filter(p -> p.unitsInStock > 0 && p.unitPrice > 3.00)
+            .collect(Collectors.toList());
 
-    print("In-stock products that cost more than 3.00:")
-    for item in expensive_in_stock_products:
-        print("%s is in stock and costs more than 3.00." % item.ProductName)
+    System.out.println("In-stock products that cost more than 3.00:");
+    sold_out_products.forEach(p -> System.out.println(String.format("%s is in stock and costs more than 3.00.", p.productName)));
+}
 ```
 #### Output
 
@@ -223,19 +226,22 @@ static void Linq4()
     });
 }
 ```
-```python
-#python
-def linq4():
-    customers = shared.getCustomerList()
+```java
+//java
+public static void Linq4() {
+    List<Customer> customers = Data.getCustomerList();
 
-    wa_customers = (x for x in customers if x.Region == "WA")
+    List<Customer> waCustomers = customers
+            .stream()
+            .filter(c -> "WA".equals(c.region))
+            .collect(Collectors.toList());
 
-    print("Customers from Washington and their orders:")
-    for customer in wa_customers:
-            print("Customer %s : %s" % (customer.CustomerID, customer.CompanyName))
-            for order in customer.Orders:
-                    print("     Order %s: %s" % (order.OrderID, order.OrderDate))
-
+    System.out.println("Customers from Washington and their orders:");
+    waCustomers.forEach(c -> {
+        System.out.println(String.format("%s : %s", c.customerId, c.companyName));
+        c.orders.forEach(o -> System.out.println(String.format("     Order %s: %s\"", o.orderId, o.orderDate)));
+    });
+}
 ```
 #### Output
 
@@ -266,25 +272,20 @@ static void Linq5()
     shortDigits.ForEach(d => Console.WriteLine($"The word {d} is shorter than its value."));
 }
 ```
-```python
-#python
-def linq5():
-    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+```java
+//java
+public static void Linq5() {
+    String[] digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    index = 0
+    List<AbstractMap.SimpleEntry<Integer, String>> shortDigits =
+            IntStream.range(0, digits.length)
+            .mapToObj(index -> new AbstractMap.SimpleEntry<>(index, digits[index]))
+            .filter(entry -> entry.getValue().length() < entry.getKey())
+            .collect(Collectors.toList());
 
-    # Lambdas cant have multiple lines, so create a filter function
-    def filter_func(digit):
-        nonlocal index
-        result = len(digit) < index
-        index += 1
-        return result
-
-    short_digits = filter(filter_func, digits)
-
-    print("Short digits:")
-    for d in short_digits:
-            print("The word %s is shorter than its value." % d)
+    System.out.println("Short digits:");
+    shortDigits.forEach(entry -> System.out.println(String.format("he word %s is shorter than its value", entry.getValue())));
+}
 ```
 #### Output
 
