@@ -10,22 +10,30 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 
   
 ### Operation Comparison Matrix
+
+**Note**: All Java functional methods operate off a stream().  All these methods listed below must be preceded by the `stream()` method.
+
+For Example
+```java
+    collection.stream().filter();
+```
+
 |Operation|C#|Java|Comment|
 |---------|--|----|-------|
 |**Filter**|`Where`|`filter(lambda)`|Native types require `Arrays.stream(int[]).boxed()`|
 |**Projection**|`Select`|`map(lambda)`|Native types require Arrays.stream(int[]).boxed()`|
-||`SelectMany`|`flatmap(lambda)`|||
-|**Partitioning**|`Take(n)`|`array[:n]`||
-||`TakeWhile(predicate)`|`takewhile(predicate)`|`from itertools import takewhile`|
+||`SelectMany`|`.flatmap(lambda)`|||
+|**Partitioning**|`Take(n)`|`.limit(n`||
+||`TakeWhile(predicate)`|`takewhile(predicate)`||
 ||`Skip(n)`|`array[n:]`||
-||`SkipWhile(predicate)`|`dropwhile(predicate, sequence)`|`from itertools import dropwhile`|
-|**Ordering**|`OrderBy`|`sequence.sort()` <br/> *or* <br/> `sorted(sequence)`|| 
-||`OrderBy(lambda)`|`sequence.sort(key=lambda)` <br/>*or* <br/> `sorted(sequence, key=lambda)`|| 
-||`OrderByDescending`|`sequence.sort(reverse=True)` <br/>*or* <br/>  `sorted(sequence, reverse=True)`|| 
-||`OrderByDescending(lambda)`|`sequence.sort(key=lambda, reverse=True)` <br/>*or* <br/> `sorted(sequence, key=lambda, reverse=True)`|| 
-||`ThenBy`|`sequence.sort(key=lambda (key1, key2))` <br/>*or* <br/> `sorted(sequence, key=lambda (key1, key))`|| 
-||`ThenByDescending`|`sequence.sort(key=lambda (key1, -key2))` <br/>*or* <br/> `sorted(sequence, key=lambda (key1, -key2))` <br/> *or use a 2 pass sort, starting with least significant* <br/> `ordered =  sorted(unordered, key=lambda (key2))`  <br/> `ordered =  sorted(ordered, key=lambda (key1))` |
-||`Reverse`|`sequence.reverse()` <br/> *or* <br/> `reversed(sequence)`||
+||`SkipWhile(predicate)`|`dropwhile(predicate, sequence)`||
+|**Ordering**|`OrderBy`|`sorted()`||
+||`OrderBy(lambda)`|`sorted(lambda)`|| 
+||`OrderByDescending`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|| 
+||`OrderByDescending(lambda)`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|| 
+||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda));`|| 
+||`ThenByDescending`|`sorted(Comparator).comparing(lambda).thenComparing(lambda), Comparator.reverseOrder()))`|| 
+||`Reverse`|`collect(Collectors.toCollection(LinkedList::new)).descendingIterator();`||
 |**Grouping**|`GroupBy`|`groupby`|`from itertools. import groupby`<br/>Grouping  works on sorted sequences <br> Once you've iterated over the grouping, you can't access it again, its empty
 |**Sets**|`Distinct`|`set`|or Set comprehension <br/> {x for x in sequence}
 ||`Union`|`union`||
@@ -62,8 +70,8 @@ Source for both C# and Java are included in the [src](src) folder in this reposi
 |Operation/Section|Java Source|C# Source|
 |-----------------|-------------|---------|
 |[Filter](#linq1-where---simple-1)|[LinqFilters.java](/src/java/LinqSamples101/src/main/java/linq/LinqFilters.java)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
-|[Projection](#linq---projection-operators)|[linq-projections.py](src/python/linq-projections.py)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
-|[Partitioning](#linq---partitioning-operators)|[linq-partitions.py](src/python/linq-partitions.py)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
+|[Projection](#linq---projection-operators)|[LinqProjections.java](/src/java/LinqSamples101/src/main/java/linq/LinqProjections.java)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
+|[Partitioning](#linq---partitioning-operators)|[LinqPartitions.java](/src/java/LinqSamples101/src/main/java/linq/LinqPartitions.java)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
 |[Ordering](#linq---ordering-operators)|[linq-ordering.py](src/python/linq-ordering.py)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
 |[Grouping](#linq---grouping-operators)|[linq-grouping.py](src/python/linq-grouping.py)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
 |[Set](#linq---set-operators)|[linq-setoperators.py](src/python/set-operators.py)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
@@ -915,22 +923,9 @@ static void Linq21()
 ```
 ```java
 //java
-def linq21():
-    customers = shared.getCustomerList()
-
-    order_greater_than_date = ((cust, order)
-                               for cust in customers
-                               for order in cust.Orders
-                               if cust.Region == "WA")
-    orders = [SimpleNamespace(customer_id=x[0].CustomerID,
-                              order_id=x[1].OrderID,
-                              orderDate=x[1].OrderDate)
-              for x in order_greater_than_date]
-
-    first_3_orders = orders[:3]
-
-    print("First 3 orders in WA:")
-    shared.print_namespace(first_3_orders)
+public static void Linq21() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -956,12 +951,9 @@ static void Linq22()
 ```
 ```java
 //java
-def linq22():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-    all_but_first4_numbers = numbers[4:]
-
-    print("All but first 4 numbers:")
-    shared.printN(all_but_first4_numbers)
+public static void Linq22() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -1000,20 +992,9 @@ static void Linq23()
 ```
 ```java
 //java
-def linq23():
-    customers = shared.getCustomerList()
-
-    wa_customers = filter(lambda c: c.Region == "WA", customers)
-    wa_customer_orders = functions.select_many(wa_customers, "Orders")
-    customer_orders = map(lambda x: SimpleNamespace(customer_id=x.item_a.CustomerID,
-                                                    order_id=x.item_b.OrderID,
-                                                    order_date=x.item_b.OrderDate),
-                          wa_customer_orders)
-
-    all_but_first2 = list(customer_orders)[2:]
-
-    print("All but first 2 orders in WA:")
-    shared.print_namespace(all_but_first2)
+public static void Linq23() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -1053,13 +1034,16 @@ static void Linq24()
 ```
 ```java
 //java
-def linq24():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq24() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    first_numbers_less_than6 = takewhile(lambda x: x < 6, numbers)
+    var firstNumbersLessThan6 = Arrays.stream(numbers)
+            .boxed()
+            .takeWhile(n -> n < 6);
 
-    print("First numbers less than 6:")
-    shared.printN(first_numbers_less_than6)
+    print("First numbers less than 6:");
+    firstNumbersLessThan6.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1085,21 +1069,18 @@ static void Linq25()
 ```
 ```java
 //java
-def linq25():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq25() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    index = 0
+    var firstSmallNumbers = IntStream.range(0, numbers.length)
+            .mapToObj(index -> new Object() {
+                int Num = numbers[index];
+                int Index = index;
+            }).takeWhile(x -> x.Num >= x.Index);
 
-    def digit_greater_equal_to_index(digit):
-        nonlocal index
-        result = digit >= index
-        index += 1
-        return result
-
-    first_small_numbers = takewhile(digit_greater_equal_to_index, numbers)
-
-    print("First numbers not less than their position:")
-    shared.printN(first_small_numbers)
+    print("First numbers not less than their position:");
+    firstSmallNumbers.forEach(x ->  print("%d" , x.Num));
+}
 ```
 #### Output
 
@@ -1123,13 +1104,16 @@ static void Linq26()
 ```
 ```java
 //java
-def linq26():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq26() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    all_but_first3_numbers = dropwhile(lambda n:  n % 3 != 0, numbers)
+    var allButFirst3Numbers = Arrays.stream(numbers)
+            .boxed()
+            .dropWhile(n -> n % 3 != 0);
 
-    print("All elements starting from first element divisible by 3:")
-    shared.printN(all_but_first3_numbers)
+    print("All elements starting from first element divisible by 3:");
+    allButFirst3Numbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1206,13 +1190,14 @@ static void Linq28()
 ```
 ```java
 //java
-def linq28():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq28() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    sorted_words = sorted(words)
+    var sortedWords = Arrays.stream(words).sorted();
 
-    print("The sorted list of words:")
-    shared.printS(sorted_words)
+    print("The sorted list of words:");
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1237,13 +1222,15 @@ static void Linq29()
 ```
 ```java
 //java
-def linq29():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq29() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    sorted_words = sorted(words, key=lambda x: len(x))
+    var sortedWords = Arrays.stream(words)
+            .sorted(Comparator.comparing(s -> s.length()));
 
-    print("The sorted list of words (by length):")
-    shared.printS(sorted_words)
+    print("The sorted list of words:");
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1267,12 +1254,14 @@ static void Linq30()
 ```
 ```java
 //java
-def linq30():
-    products = shared.getProductList()
+public static void Linq30() {
+    var products = Data.getProductList();
 
-    sorted_products = sorted(products, key=lambda p:  p.ProductName)
+    var sortedProducts = products.stream()
+            .sorted(Comparator.comparing(p -> p.productName));
 
-    shared.print_namespace(sorted_products)
+    sortedProducts.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1298,12 +1287,14 @@ static void Linq31()
 ```
 ```java
 //java
-def linq31():
-    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
+public static void Linq31() {
+    var words = new String[] { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-    sorted_words = sorted(words, key=lambda s: s.casefold())
+    var sortedWords = Arrays.stream(words).
+            sorted(Comparator.comparing(String::toString, String.CASE_INSENSITIVE_ORDER));
 
-    shared.printS(sorted_words)
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1330,13 +1321,15 @@ static void Linq32()
 ```
 ```java
 //java
-def linq32():
-    doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
+public  static void Linq32() {
+    var doubles = new Double[]{ 1.7, 2.3, 1.9, 4.1, 2.9 };
 
-    sorted_doubles = sorted(doubles, reverse=True)
+    var sortedDoubles = Arrays.stream(doubles)
+            .sorted(Comparator.reverseOrder());
 
-    print("The doubles from highest to lowest:")
-    shared.printN(sorted_doubles)
+    print("The doubles from highest to lowest:");
+    sortedDoubles.forEach((System.out::println));
+}
 ```
 #### Output
 
@@ -1362,12 +1355,14 @@ static void Linq33()
 ```
 ```java
 //java
-def linq33():
-    products = shared.getProductList()
+public static void Linq33() {
+    var products = Data.getProductList();
 
-    sorted_products = sorted(products, key=lambda p: p.UnitsInStock, reverse=True)
+    var reverseSortedProducts = products.stream()
+            .sorted(Comparator.comparing(Product::getUnitsInStock, Comparator.reverseOrder()));
 
-    shared.print_namespace(sorted_products)
+    reverseSortedProducts.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1393,12 +1388,14 @@ static void Linq34()
 ```
 ```java
 //java
-def linq34():
-    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
+public static void Linq34() {
+    var words = new String[] { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-    sorted_words = sorted(words, key=lambda s: s.casefold(), reverse=True)
+    var sortedWords = Arrays.stream(words).
+            sorted(Comparator.comparing(String::toString, String.CASE_INSENSITIVE_ORDER).reversed());
 
-    shared.print_namespace(sorted_words)
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1427,13 +1424,20 @@ static void Linq35()
 ```
 ```java
 //java
-def linq35():
-    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+public static void Linq35() {
+public static void Linq35() {
+    var digits = new String[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    sorted_digits = sorted(digits, key=lambda digit: (len(digit), digit))
+    var sortedDigits = Arrays.stream(digits)
+            .sorted(
+                    Comparator
+                        .comparing(String::length)
+                        .thenComparing(String::toString)
+            );
 
-    print("Sorted digits:")
-    shared.printS(sorted_digits)
+    print("Sorted digits:");
+    sortedDigits.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1466,12 +1470,16 @@ static void Linq36()
 ```
 ```java
 //java
-def linq36():
-    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
+public static void Linq36() {
+    var words = new String[] { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-    sorted_words = sorted(words, key=lambda word: (len(word), word.casefold()))
+    var sortedWords = Arrays.stream(words)
+            .sorted(Comparator
+                        .comparing(String::length)
+                        .thenComparing(String::toString, String.CASE_INSENSITIVE_ORDER));
 
-    shared.printS(sorted_words)
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1499,13 +1507,16 @@ public void Linq37()
 ```
 ```java
 //java
-def linq37():
-    products = shared.getProductList()
+public static void Linq37() {
+    var products = Data.getProductList();
 
-    # negate secondary sort because its a number for reverse order
-    sorted_products = sorted(products, key=lambda product: (product.Category, -product.UnitPrice))
+    var sortedProducts = products.stream()
+            .sorted(Comparator
+                        .comparing(Product::getCategory)
+                        .thenComparing(Product::getUnitPrice, Comparator.reverseOrder()));
 
-    shared.print_namespace(sorted_products)
+    sortedProducts.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1537,14 +1548,16 @@ static void Linq38()
 ```
 ```java
 //java
-def linq38():
-    words = ["aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry"]
+public static void Linq38() {
+    var words = new String[] { "aPPLE", "AbAcUs", "bRaNcH", "BlUeBeRrY", "ClOvEr", "cHeRry" };
 
-    # two pass sort, sort by least significant first
-    sorted_words = sorted(words, key=lambda word: word.casefold(), reverse=True)
-    sorted_words = sorted(sorted_words, key=lambda word: len(word))
+    var sortedWords = Arrays.stream(words)
+            .sorted(Comparator
+                    .comparing(String::length)
+                    .thenComparing(String::toString, String.CASE_INSENSITIVE_ORDER.reversed()));
 
-    shared.printS(sorted_words)
+    sortedWords.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1573,13 +1586,17 @@ static void Linq39()
 ```
 ```java
 //java
-def linq39():
-    digits = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+public static void Linq39() {
+    var digits = new String [] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    reversed_i_digits = reversed(list(filter(lambda digit: digit[1] == "i", digits)))
+    var reversedIDigits = Arrays.stream(digits)
+            .filter(s -> s.charAt(1) == 'i')
+            .collect(Collectors.toCollection(LinkedList::new))
+            .descendingIterator();
 
-    print("A backwards list of the digits with a second character of 'i':")
-    shared.printS(reversed_i_digits)
+    print("A backwards list of the digits with a second character of 'i':");
+    reversedIDigits.forEachRemaining(System.out::println);
+}
 ```
 #### Output
 

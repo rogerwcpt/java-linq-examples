@@ -15,6 +15,22 @@ public class Product {
         this.unitsInStock = unitsInStock;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getUnitsInStock() {
+        return unitsInStock;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
     @Override
     public String toString() {
         return "(Product " +
