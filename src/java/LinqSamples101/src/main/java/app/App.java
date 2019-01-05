@@ -1,9 +1,13 @@
 package app;
 
+import linq.LinqBase;
+
 import static linq.LinqFilters.*;
+import static linq.LinqGrouping.*;
 import static linq.LinqOrdering.*;
 import static linq.LinqPartitions.*;
 import static linq.LinqProjections.*;
+import static linq.LinqSets.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -49,6 +53,26 @@ public class App {
 //        Linq36();
 //        Linq37();
 //        Linq38();
-        Linq39();
+//        Linq39();
+
+        // Grouping
+//        Linq40();
+//        Linq41();
+//        Linq42();
+//        Linq43();
+
+        // Sets
+//        Linq46();
+//        Linq47();
+//        Linq48();
+//        Linq49();
+//        Linq50();
+//        Linq51();
+//        Linq52();
+//        Linq53();
+
+        // Conversion
     }
+
+
 }

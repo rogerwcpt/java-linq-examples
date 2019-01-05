@@ -34,10 +34,10 @@ For Example
 ||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda));`|| 
 ||`ThenByDescending`|`sorted(Comparator).comparing(lambda).thenComparing(lambda), Comparator.reverseOrder()))`|| 
 ||`Reverse`|`collect(Collectors.toCollection(LinkedList::new)).descendingIterator();`||
-|**Grouping**|`GroupBy`|`groupby`|`from itertools. import groupby`<br/>Grouping  works on sorted sequences <br> Once you've iterated over the grouping, you can't access it again, its empty
-|**Sets**|`Distinct`|`set`|or Set comprehension <br/> {x for x in sequence}
-||`Union`|`union`||
-||`Interect`|`intersection`||
+|**Grouping**|`GroupBy`|`.collect(Collectors.groupingBy(lamnda, Collectors.toList()));`||
+|**Sets**|`Distinct`|`distinct`|
+||`Union`|`Stream.Concat(stream1, stream2).distinct()`||
+||`Interect`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).anyMatch(b -> b == a));`||
 ||`Except`|`difference`||
 |**Conversion**|`ToArray`|`list`||
 ||`ToList`|`list`||
@@ -1636,22 +1636,17 @@ static void Linq40()
 ```
 ```java
 //java
-def linq40():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq40() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    # First create a record of numbers and their modulus of 5
-    number_remainders = map(lambda n: SimpleNamespace(Number=n,
-                                                      Remainder=n % 5),
-                            numbers)
+    var numberGroups = Arrays.stream(numbers).boxed()
+            .collect(Collectors.groupingBy(n -> n % 5, Collectors.toList()));
 
-    # Group By only works on sorted lists, so sort by both fields
-    sorted_by_reminder = sorted(number_remainders, key=lambda x: (x.Remainder, x.Number))
-    remainder_groups = groupby(sorted_by_reminder, key=lambda nr: nr.Remainder)
-
-    for key, items in remainder_groups:
-        print("Numbers with a remainder of %d when divided by 5:" % key)
-        for item in items:
-            print(item.Number)
+    for (var key:numberGroups.keySet()) {
+        print("Numbers with a remainder of %d when divided by 5:", key);
+        numberGroups.get(key).forEach(System.out::println);
+    }
+}
 ```
 #### Output
 
@@ -1697,21 +1692,17 @@ static void Linq41()
 ```
 ```java
 //java
-def linq41():
-    words = ["blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese"]
+public static void Linq41() {
+    var words = new String [] { "blueberry", "chimpanzee", "abacus", "banana", "apple", "cheese" };
 
-    first_letter_words = map(lambda w: SimpleNamespace(Letter=w[0],
-                                                       Word=w),
-                             words)
+    var wordGroups = Arrays.stream(words)
+            .collect(Collectors.groupingBy(w -> w.charAt(0), Collectors.toList()));
 
-    # Group By only works on sorted lists, so sort by both fields
-    sorted_letter_words = sorted(first_letter_words, key=lambda x: (x.Word, x.Letter))
-    letter_groups = groupby(sorted_letter_words, key=lambda nr: nr.Letter)
-
-    for key, items in letter_groups:
-        print("Words that start with the letter '%s':" % key)
-        for item in items:
-            print(item.Word)
+    for (var key:wordGroups.keySet()) {
+        print("Words that start with the letter '%s':", key);
+        wordGroups.get(key).forEach(System.out::println);
+    }
+}
 ```
 #### Output
 
@@ -1759,15 +1750,18 @@ def linq42():
 ```
 #### Output
 
-    Products in the category 'Beverages':
-    [{productId: 1, productName: Chai, category: Beverages, unitPrice: 18.00, unitsInStock: 39}, {productId: 2, productName: Products in the category 'Condiments':
-    [{productId: 3, productName: Aniseed Syrup, category: Condiments, unitPrice: 10.00, unitsInStock: 13}, {productId: 4, Products in the category 'Confections':
-    [{productId: 16, productName: Pavlova, category: Confections, unitPrice: 17.45, unitsInStock: 29}, {productId: 19, Products in the category 'Dairy Products':
-    [{productId: 11, productName: Queso Cabrales, category: Dairy Products, unitPrice: 21.00, unitsInStock: 22}, {productId: Products in the category 'Grains/Cereals':
-    [{productId: 22, productName: Gustaf's Knäckebröd, category: Grains/Cereals, unitPrice: 21.00, unitsInStock: 104}, Products in the category 'Meat/Poultry':
-    [{productId: 9, productName: Mishi Kobe Niku, category: Meat/Poultry, unitPrice: 97.00, unitsInStock: 29}, {productId: 17,Products in the category 'Produce':
-    [{productId: 7, productName: Uncle Bob's Organic Dried Pears, category: Produce, unitPrice: 30.00, unitsInStock: 15}, Products in the category 'Seafood':
-    [{productId: 10, productName: Ikura, category: Seafood, unitPrice: 31.00, unitsInStock: 31}, {productId: 13, productName: 
+    Products in the category 'Grains/Cereals':
+    (Product id=22, name=Gustaf's Knäckebröd, cat=Grains/Cereals, price=21.0, inStock=104)
+    (Product id=23, name=Tunnbröd, cat=Grains/Cereals, price=9.0, inStock=61)
+    (Product id=42, name=Singaporean Hokkien Fried Mee, cat=Grains/Cereals, price=14.0, inStock=26)
+    (Product id=52, name=Filo Mix, cat=Grains/Cereals, price=7.0, inStock=38)
+    (Product id=56, name=Gnocchi di nonna Alice, cat=Grains/Cereals, price=38.0, inStock=21)
+    (Product id=57, name=Ravioli Angelo, cat=Grains/Cereals, price=19.5, inStock=36)
+    (Product id=64, name=Wimmers gute Semmelknödel, cat=Grains/Cereals, price=33.25, inStock=22)
+    Products in the category 'Confections':
+    (Product id=16, name=Pavlova, cat=Confections, price=17.45, inStock=29)
+    (Product id=19, name=Teatime Chocolate Biscuits, cat=Confections, price=9.2, inStock=25)
+    ...
 
 ### linq43: GroupBy - Nested
 >This sample uses nested grouping to partition a list of each customer's orders, first by year, and then by month.
@@ -1807,9 +1801,9 @@ public void Linq43()
 ```
 ```java
 //java
-def linq43():
-    pass
-
+public  static void Linq43() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -1906,14 +1900,19 @@ static void Linq48()
 ```
 ```java
 //java
-def linq48():
-    numbers_a = [0, 2, 4, 5, 6, 8, 9]
-    numbers_b = [1, 3, 5, 7, 8]
+public static void Linq48() {
+    int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+    int[] numbersB = { 1, 3, 5, 7, 8 };
 
-    unique_numbers = set(numbers_a + numbers_b)
+    var uniqueNumbers = Stream
+            .concat(
+                    Arrays.stream(numbersA).boxed(),
+                    Arrays.stream(numbersB).boxed())
+            .distinct();
 
-    print("Unique numbers from both arrays:")
-    shared.printN(unique_numbers)
+    print("Unique numbers from both arrays:");
+    uniqueNumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2006,14 +2005,16 @@ static void Linq50()
 ```
 ```java
 //java
-def linq50():
-    numbers_a = [0, 2, 4, 5, 6, 8, 9]
-    numbers_b = [1, 3, 5, 7, 8]
+public static void Linq50() {
+    int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+    int[] numbersB = { 1, 3, 5, 7, 8 };
 
-    common_numbers = set(numbers_a).intersection((set(numbers_b)))
+        var uniqueNumbers = Arrays.stream(numbersA)
+                .filter(a -> Arrays.stream(numbersB).anyMatch(b -> b == a));
 
-    print("Common numbers shared by both arrays:")
-    shared.printN(common_numbers)
+        print("Common numbers shared by both arrays:");
+    uniqueNumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2041,54 +2042,55 @@ static void Linq51()
 ```
 ```java
 //java
-def linq51():
-    products = shared.getProductList()
-    customers = shared.getCustomerList()
+public static void Linq51() {
+    var products = Data.getProductList();
+    var customers = Data.getCustomerList();
 
-    product_first_chars = {p.ProductName[0] for p in products}
-    customer_first_chars = {c.CompanyName[0] for c in customers}
+    var uniqueFirstChars = products.stream()
+            .map(p -> p.productName.charAt(0))
+            .filter(p -> customers.stream().map(c -> c.companyName.charAt(0)).anyMatch(c -> c == p))
+            .distinct();
 
-    unique_first_chars = product_first_chars.intersection(customer_first_chars)
-
-    print("Common first letters from Product names and Customer names:")
-    shared.printS(unique_first_chars)
+    print("Common first letters from Product names and Customer names:");
+    uniqueFirstChars.forEach(System.out::println);
+}
 ```
 #### Output
 
     Common first letters from Product names and Customer names:
-    A
-    T
     C
-    E
-    Q
-    O
-    W
-    P
-    F
-    S
+    A
     G
-    L
-    V
-    M
-    K
     N
+    M
     I
-    B
+    Q
+    K
+    T
+    P
+    S
     R
+    B
+    V
+    F
+    E
+    W
+    L
+    O
 
 ### linq52: Except - 1
 >This sample creates a sequence that excludes the values from the second sequence.
 ```csharp
 //c#
-static void Linq52()
-{
+public static void Linq52() {
     int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
     int[] numbersB = { 1, 3, 5, 7, 8 };
 
-    var aOnlyNumbers = numbersA.Except(numbersB);
+    var uniqueNumbers = Arrays.stream(numbersA)
+            .filter(a -> Arrays.stream(numbersB).noneMatch(b -> b == a));
 
-    Console.WriteLine("Numbers in first array but not second array:");
-    aOnlyNumbers.ForEach(Console.WriteLine);
+    print("Common numbers shared by both arrays:");
+    uniqueNumbers.forEach(System.out::println);
 }
 ```
 ```java
@@ -2106,10 +2108,10 @@ def linq52():
 
     Numbers in first array but not second array:
     0
-    9
     2
     4
     6
+    9
 
 ### linq53: Except - 2
 >This sample creates a sequence that the first letters of product names that but excludes letters of customer names first letter.
@@ -2146,9 +2148,9 @@ def linq53():
 #### Output
 
     First letters from Product names, but not from Customer names:
-    Z
-    J
     U
+    J
+    Z
 
 
 LINQ - Conversion Operators

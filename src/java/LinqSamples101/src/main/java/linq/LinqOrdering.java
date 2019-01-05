@@ -132,5 +132,4 @@ public class LinqOrdering extends LinqBase {
         print("A backwards list of the digits with a second character of 'i':");
         reversedIDigits.forEachRemaining(System.out::println);
     }
-
 }
