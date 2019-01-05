@@ -18,53 +18,53 @@ For Example
     collection.stream().filter();
 ```
 
-|Operation|C#|Java|Comment|
-|---------|--|----|-------|
-|**Filter**|`Where`|`filter(lambda)`|Native types require `Arrays.stream(int[]).boxed()`|
-|**Projection**|`Select`|`map(lambda)`|Native types require Arrays.stream(int[]).boxed()`|
-||`SelectMany`|`.flatmap(lambda)`|||
-|**Partitioning**|`Take(n)`|`.limit(n`||
-||`TakeWhile(predicate)`|`takewhile(predicate)`||
-||`Skip(n)`|`array[n:]`||
-||`SkipWhile(predicate)`|`dropwhile(predicate, sequence)`||
-|**Ordering**|`OrderBy`|`sorted()`||
-||`OrderBy(lambda)`|`sorted(lambda)`|| 
-||`OrderByDescending`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|| 
-||`OrderByDescending(lambda)`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|| 
-||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda));`|| 
-||`ThenByDescending`|`sorted(Comparator).comparing(lambda).thenComparing(lambda), Comparator.reverseOrder()))`|| 
-||`Reverse`|`collect(Collectors.toCollection(LinkedList::new)).descendingIterator();`||
-|**Grouping**|`GroupBy`|`.collect(Collectors.groupingBy(lamnda, Collectors.toList()));`||
+|Operation|C#|Java|
+|---------|--|----|
+|**Filter**|`Where`|`filter(lambda)`|
+|**Projection**|`Select`|`map(lambda)`|
+||`SelectMany`|`.flatmap(lambda)`|
+|**Partitioning**|`Take(n)`|`.limit(n`|
+||`TakeWhile(predicate)`|`takewhile(predicate)`|
+||`Skip(n)`|`array[n:]`|
+||`SkipWhile(predicate)`|`dropwhile(predicate, sequence)`|
+|**Ordering**|`OrderBy`|`sorted()`|
+||`OrderBy(lambda)`|`sorted(lambda)`||
+||`OrderByDescending`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|
+||`OrderByDescending(lambda)`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|
+||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda));`|
+||`ThenByDescending`|`sorted(Comparator).comparing(lambda).thenComparing(lambda), Comparator.reverseOrder()))`|
+||`Reverse`|`collect(Collectors.toCollection(LinkedList::new)).descendingIterator();`|
+|**Grouping**|`GroupBy`|`.collect(Collectors.groupingBy(lamnda, Collectors.toList()));`|
 |**Sets**|`Distinct`|`distinct`|
-||`Union`|`Stream.Concat(stream1, stream2).distinct()`||
-||`Interect`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).anyMatch(b -> b == a));`||
-||`Except`|`difference`||
-|**Conversion**|`ToArray`|`list`||
-||`ToList`|`list`||
-||`ToDictionary`|`{key:value for (key,value) in sequence}`|or use `dict` in conjuction with `zip`|
+||`Union`|`Stream.Concat(stream1, stream2).distinct()`|
+||`Interect`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).anyMatch(b -> b == a));`|
+||`Except`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).nonMatch(b -> b == a));`|
+|**Conversion**|`ToArray`|`list`|
+||`ToList`|`list`|
+||`ToDictionary`|`{key:value for (key,value) in sequence}`|or use `dict` in conjuction with `zip`
 ||`OfType`|`'filter` using `isinstance` as predicate|
-|**Element**|`First`|`next`||
-||`First(lambda)`|`next(list)`|`next(filter(lambda)`|
-||`FirstOrDefault`|`next(list)`|`next(filter(lambda), default)`|
-||`ElementAt`|`list[0]`||
+|**Element**|`First`|`next`|
+||`First(lambda)`|`next(list)`|
+||`FirstOrDefault`|`next(list)`|
+||`ElementAt`|`list[0]`|
 |**Generation**|`Enumerable.Range`|range|
-||`Enumerable.Repeat`|`[x] * n` <br/> *or* <br /> `repeat(x, n)`|`from itertools import repeat`|
-|**Quantifiers**|`Any`|`any`||
-||`All`|`all`||
-|**Aggregate**|`Count`|`len` ||
-||`Count(lamda)`|`sum(1, iterator)`||
-||`Sum`|`sum`||
-||`Min`|`min`||
-||`Max`|`max`||
-||`Avg`||Custom calculation using `sum` / `len`|
-||`Sum(lambda)`|`sum(iterator)`||
-||`Min(lambda)`|`min(iterator)`||
-||`Max(lambda)`|`max(iterator)`||
-||`Avg(lambda)`||Custom calculation using <br /> `sum(iterator)` / `len`|
-||`Aggregate`|`reduce(lambda, sequence)`|`from functools import reduce`|
-||`Aggregate(seed, lamda)`|`reduce(lambsa,seed,sequence)`|`from functools import reduce`|
-|**Miscellaneous**|`Concat(IEnumerable)`|`list1 + list2`||
-||`SequenceEqual(IEnumerable)`|`list1==list2`||
+||`Enumerable.Repeat`|`[x] * n` <br/> *or* <br /> `repeat(x, n)`|
+|**Quantifiers**|`Any`|`any`|
+||`All`|`all`|
+|**Aggregate**|`Count`|`len` |
+||`Count(lamda)`|`sum(1, iterator)`|
+||`Sum`|`sum`|
+||`Min`|`min`|
+||`Max`|`max`|
+||`Avg`|||
+||`Sum(lambda)`|`sum(iterator)`|
+||`Min(lambda)`|`min(iterator)`|
+||`Max(lambda)`|`max(iterator)`|
+||`Avg(lambda)`|
+||`Aggregate`|`reduce(lambda, sequence)`|
+||`Aggregate(seed, lamda)`|`reduce(lambsa,seed,sequence)`|
+|**Miscellaneous**|`Concat(IEnumerable)`|`list1 + list2`|
+||`SequenceEqual(IEnumerable)`|`list1==list2`|
 
 #### Source
 |Operation/Section|Java Source|C# Source|
@@ -72,9 +72,9 @@ For Example
 |[Filter](#linq1-where---simple-1)|[LinqFilters.java](/src/java/LinqSamples101/src/main/java/linq/LinqFilters.java)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
 |[Projection](#linq---projection-operators)|[LinqProjections.java](/src/java/LinqSamples101/src/main/java/linq/LinqProjections.java)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
 |[Partitioning](#linq---partitioning-operators)|[LinqPartitions.java](/src/java/LinqSamples101/src/main/java/linq/LinqPartitions.java)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
-|[Ordering](#linq---ordering-operators)|[linq-ordering.py](src/python/linq-ordering.py)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
-|[Grouping](#linq---grouping-operators)|[linq-grouping.py](src/python/linq-grouping.py)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
-|[Set](#linq---set-operators)|[linq-setoperators.py](src/python/set-operators.py)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
+|[Ordering](#linq---ordering-operators)|[LinqOrdering.java](/src/java/LinqSamples101/src/main/java/linq/LinqOrdering.java)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
+|[Grouping](#linq---grouping-operators)|[LinqGrouping.java](/src/java/LinqSamples101/src/main/java/linq/LinqGrouping.java)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
+|[Set](#linq---set-operators)|[LinqSets.java](/src/java/LinqSamples101/src/main/java/linq/LinqSets.java)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
 |[Conversion](#linq---conversion-operators)|[linq-conversion.py](src/python/linq-conversion.py)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
 |[Element](#linq---element-operators)|[linq-element.py](src/python/linq-element.py)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
 |[Generation](#linq---generation-operators)|[generationon.py](src/python/linq-generation.py)|[linq-generation/Program.cs](src/csharp/linq-generation/Program.cs)|
