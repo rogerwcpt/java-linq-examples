@@ -1,14 +1,7 @@
 package app;
 
-import linq.LinqBase;
-
-import static linq.LinqConversion.*;
-import static linq.LinqFilters.*;
-import static linq.LinqGrouping.*;
-import static linq.LinqOrdering.*;
-import static linq.LinqPartitions.*;
-import static linq.LinqProjections.*;
-import static linq.LinqSets.*;
+import static linq.LinqElements.*;
+import static linq.LinqGeneration.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -75,8 +68,19 @@ public class App {
         // Conversion
 //        Linq54();
 //        Linq55();
-        Linq56();
-        Linq57();
+//        Linq56();
+//        Linq57();
+
+        // Elements
+//        Linq58();
+//        Linq59();
+//        Linq61();
+//        Linq62();
+//        Linq64();
+
+        // Generation
+//        Linq65();
+        Linq66();
     }
 
 

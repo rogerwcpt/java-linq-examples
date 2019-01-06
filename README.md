@@ -43,12 +43,13 @@ For Example
 ||`ToList`|`collect(Collectors.list)`|
 ||`ToDictionary`|`collect(Collectors.toMap(lambdaKey, lambdaValue))`|
 ||`OfType`|`filter(Type.class::isInstance)`|
-|**Element**|`First`|`next`|
-||`First(lambda)`|`next(list)`|
-||`FirstOrDefault`|`next(list)`|
-||`ElementAt`|`list[0]`|
-|**Generation**|`Enumerable.Range`|range|
-||`Enumerable.Repeat`|`[x] * n` <br/> *or* <br /> `repeat(x, n)`|
+|**Element**|`First`|`findFirst`|
+||`First(lambda)`|`filter(lambda).findFirst()`|
+||`FirstOrDefault`|`findFirst().orElse(default)`|
+||`FirstOrDefault(lambda)`|`filter(lambda).findFirst().orElse(default)`|
+||`ElementAt(n)`|`toArray().[n]`|
+|**Generation**|`Enumerable.Range()`|` IntStream.range()`|
+||`Enumerable.Repeat(x, n)`|`Arrays.fill(array[n], x)`|
 |**Quantifiers**|`Any`|`any`|
 ||`All`|`all`|
 |**Aggregate**|`Count`|`len` |
@@ -75,8 +76,8 @@ For Example
 |[Ordering](#linq---ordering-operators)|[LinqOrdering.java](/src/java/LinqSamples101/src/main/java/linq/LinqOrdering.java)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
 |[Grouping](#linq---grouping-operators)|[LinqGrouping.java](/src/java/LinqSamples101/src/main/java/linq/LinqGrouping.java)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
 |[Set](#linq---set-operators)|[LinqSets.java](/src/java/LinqSamples101/src/main/java/linq/LinqSets.java)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
-|[Conversion](#linq---conversion-operators)|[LinqConversion.java](/src/java/LinqSamples101/src/main/java/linq/LinqConversion.java)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
-|[Element](#linq---element-operators)|[linq-element.py](src/python/linq-element.py)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
+|[Conversion](#linq---conversion-operators)|[LinqConversion.java](/src/java/LinqSamples101/LinqConversion.java)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
+|[Element](#linq---element-operators)|[LinqElements.java](/src/java/LinqSamples101/LinqElements.java)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
 |[Generation](#linq---generation-operators)|[generationon.py](src/python/linq-generation.py)|[linq-generation/Program.cs](src/csharp/linq-generation/Program.cs)|
 |[Quantifiers](#linq---quantifiers)|[linq-quantifiers.py](src/python/linq-quantifiers.py)|[linq-quantifiers/Program.cs](src/csharp/linq-quantifiers/Program.cs)|
 |[Aggregate](#linq---aggregate-operators)|[linq-aggregate.py](src/python/linq-aggregate.py)|[linq-aggregate/Program.cs](src/csharp/linq-aggregate/Program.cs)|
@@ -2328,16 +2329,19 @@ static void Linq58()
 ```
 ```java
 //java
-def linq58():
-    products = shared.getProductList()
+public static void Linq58() {
+    var products = Data.getProductList();
 
-    product_12 = next(filter(lambda p: p.ProductID == 12, products))
+    var produdct12 = products.stream()
+                        .filter(p -> p.productId == 12)
+                        .findFirst();
 
-    print(product_12)
+    System.out.println(produdct12);
+}
 ```
 #### Output
 
-    {productId: 12, productName: Queso Manchego La Pastora, category: Dairy Products, unitPrice: 38.0, unitsInStock: 86}
+    Optional[(Product id=12, name=Queso Manchego La Pastora, cat=Dairy Products, price=38.0, inStock=86)]
 
 ### linq59: First - Condition
 >This sample finds the first element in the array that starts with 'o'.
@@ -2354,12 +2358,15 @@ static void Linq59()
 ```
 ```java
 //java
-def linq59():
-    strings = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+public static void Linq59() {
+    var strings = new String[]{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-    starts_with_o = next(s for s in strings if s[0] == 'o')
+    var startsWithO = Arrays.stream(strings)
+            .filter(s -> s.startsWith("o"))
+            .findFirst();
 
-    print("A string starting with 'o': %s" % starts_with_o)
+    print("A string starting with 'o': %s", startsWithO);
+}
 ```
 #### Output
 
@@ -2380,12 +2387,15 @@ static void Linq61()
 ```
 ```java
 //java
-def linq61():
-    numbers = []
+public static void Linq61() {
+    var numbers = new int[0];
 
-    first_num_or_default = next((n for n in numbers), 0)
+    var firstNumOrdDefault = Arrays.stream(numbers).boxed()
+            .findFirst()
+            .orElse(0);
 
-    print(first_num_or_default)
+    System.out.println(firstNumOrdDefault);
+}
 ```
 #### Output
 
@@ -2406,16 +2416,20 @@ static void Linq62()
 ```
 ```java
 //java
-def linq62():
-    products = shared.getProductList()
+public static void Linq62() {
+    var products = Data.getProductList();
 
-    product789 = next((p for p in products if p.ProductID == 789), None)
+    var product789 = products.stream()
+            .filter(p -> p.productId == 789)
+            .findFirst()
+            .orElse(null);
 
-    print("Product 789 exists: %s" % (product789 is not None))
+    print("Product 789 exists: %s" , product789 != null);
+}
 ```
 #### Output
 
-    Product 789 exists: False
+    Product 789 exists: false
 
 ### linq64: ElementAt
 >This sample retrieve the second number greater than 5 from an array.
@@ -2434,12 +2448,16 @@ static void Linq64()
 ```
 ```java
 //java
-def linq64():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq64() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    second_number_greater_than_5 = [n for n in numbers if n > 5][1]
+    var secondNumberGreaterThan5 = Arrays.stream(numbers).boxed()
+            .filter(n -> n > 5)
+            .toArray()
+            [1];
 
-    print("Second number > 5: %d" % second_number_greater_than_5)
+    print("Second number > 5: %d" , secondNumberGreaterThan5);
+}
 ```
 #### Output
 
@@ -2468,14 +2486,18 @@ static void Linq65()
 ```
 ```java
 //java
-def linq65():
-    numbers = range(100, 150)
+public static void Linq65() {
+    var numbersEvenOdd = IntStream.range(100, 150)
+            .mapToObj(n -> new Object() {
+                int Number = n;
+                String OddEven = (n % 2 == 0 ? "even" : "odd");
+            })
+            .collect(Collectors.toList());
 
-    odd_even = ({'Number': n, 'OddEven': ("odd" if (n % 2 == 1) else "even")} for n in numbers)
-
-    for item in odd_even:
-        print("The number %s is %s" % (item['Number'], item['OddEven']))
-
+    for (var num: numbersEvenOdd) {
+        print("The number %d is %s", num.Number, num.OddEven);
+    }
+}
 ```
 #### Output
 
