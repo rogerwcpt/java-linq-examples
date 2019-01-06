@@ -53,7 +53,7 @@ For Example
 |**Quantifiers**|`Any(predicate)`|`any(predicate)`|
 ||`All(predicate)`|`all(predicate)`|
 |**Aggregate**|`Count`|`len` |
-||`Count(lamda)`|`sum(1, iterator)`|
+||`Count(lamda)`|`filter(predicate).count()`|
 ||`Sum`|`sum`|
 ||`Min`|`min`|
 ||`Max`|`max`|
