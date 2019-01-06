@@ -1,12 +1,9 @@
 package linq;
 
-import models.Product;
 import support.Data;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.function.DoubleBinaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class LinqAggregate extends LinqBase {

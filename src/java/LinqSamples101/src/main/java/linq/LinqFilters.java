@@ -3,7 +3,6 @@ package linq;
 import support.Data;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LinqFilters extends LinqBase {

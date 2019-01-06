@@ -1,11 +1,8 @@
 package linq;
 
-import support.Data;
-
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.partitioningBy;
 
 public class LinqPartitions extends  LinqBase {
 

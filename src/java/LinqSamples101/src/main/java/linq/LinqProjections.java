@@ -3,12 +3,7 @@ package linq;
 import support.Data;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class LinqProjections extends LinqBase {
 

@@ -2,7 +2,6 @@ package linq;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public class LinqGeneration extends LinqBase {
