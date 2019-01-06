@@ -1,5 +1,5 @@
 
-101 LINQ Samples in Java (STILL A WORK IN PROGRESS)
+101 LINQ Samples in Java
 ========================
 
 Port of the [C# 101 LINQ Samples](http://code.msdn.microsoft.com/101-LINQ-Samples-3fb9811b) rewritten into modern C# syntax and then also using Java, using built in methods where possible.
@@ -20,7 +20,7 @@ For Example
 
 |Operation|C#|Java|
 |---------|--|----|
-|**Filter**|`Where`|`filter(lambda)`|
+|**Filter**|`Where`|`filter(predicate)`|
 |**Projection**|`Select`|`map(lambda)`|
 ||`SelectMany`|`.flatmap(lambda)`|
 |**Partitioning**|`Take(n)`|`.limit(n`|
@@ -44,55 +44,56 @@ For Example
 ||`ToDictionary`|`collect(Collectors.toMap(lambdaKey, lambdaValue))`|
 ||`OfType`|`filter(Type.class::isInstance)`|
 |**Element**|`First`|`findFirst`|
-||`First(lambda)`|`filter(lambda).findFirst()`|
+||`First(predicate)`|`filter(predicate).findFirst()`|
 ||`FirstOrDefault`|`findFirst().orElse(default)`|
-||`FirstOrDefault(lambda)`|`filter(lambda).findFirst().orElse(default)`|
+||`FirstOrDefault(predicate)`|`filter(predicate).findFirst().orElse(default)`|
 ||`ElementAt(n)`|`toArray().[n]`|
 |**Generation**|`Enumerable.Range()`|` IntStream.range()`|
 ||`Enumerable.Repeat(x, n)`|`Arrays.fill(array[n], x)`|
-|**Quantifiers**|`Any`|`any`|
-||`All`|`all`|
+|**Quantifiers**|`Any(predicate)`|`any(predicate)`|
+||`All(predicate)`|`all(predicate)`|
 |**Aggregate**|`Count`|`len` |
 ||`Count(lamda)`|`sum(1, iterator)`|
 ||`Sum`|`sum`|
 ||`Min`|`min`|
 ||`Max`|`max`|
 ||`Avg`|||
-||`Sum(lambda)`|`sum(iterator)`|
-||`Min(lambda)`|`min(iterator)`|
-||`Max(lambda)`|`max(iterator)`|
-||`Avg(lambda)`|
-||`Aggregate`|`reduce(lambda, sequence)`|
-||`Aggregate(seed, lamda)`|`reduce(lambsa,seed,sequence)`|
-|**Miscellaneous**|`Concat(IEnumerable)`|`list1 + list2`|
-||`SequenceEqual(IEnumerable)`|`list1==list2`|
+||`Sum(predicate)`|`sum(predicate)`|
+||`Min(predicate)`|`min(predicate)`|
+||`Max(predicate)`|`max(predicate)`|
+||`Avg(predicate)`|
+||`Aggregate`|`reduce(lambda)`|
+||`Aggregate(seed, lamda)`|`reduce(lambsa,seed)`|
+|**Miscellaneous**|`Concat(IEnumerable)`|`concat(stream1, stream2)`|
+||`SequenceEqual(IEnumerable)`|`Arrays.Equal(array1,array2)` <br /> `list1.equals(list2)`|
 
 #### Source
 |Operation/Section|Java Source|C# Source|
 |-----------------|-------------|---------|
-|[Filter](#linq1-where---simple-1)|[LinqFilters.java](/src/java/LinqSamples101/src/main/java/linq/LinqFilters.java)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
-|[Projection](#linq---projection-operators)|[LinqProjections.java](/src/java/LinqSamples101/src/main/java/linq/LinqProjections.java)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
-|[Partitioning](#linq---partitioning-operators)|[LinqPartitions.java](/src/java/LinqSamples101/src/main/java/linq/LinqPartitions.java)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
-|[Ordering](#linq---ordering-operators)|[LinqOrdering.java](/src/java/LinqSamples101/src/main/java/linq/LinqOrdering.java)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
-|[Grouping](#linq---grouping-operators)|[LinqGrouping.java](/src/java/LinqSamples101/src/main/java/linq/LinqGrouping.java)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
-|[Set](#linq---set-operators)|[LinqSets.java](/src/java/LinqSamples101/src/main/java/linq/LinqSets.java)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
-|[Conversion](#linq---conversion-operators)|[LinqConversion.java](/src/java/LinqSamples101/LinqConversion.java)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
-|[Element](#linq---element-operators)|[LinqElements.java](/src/java/LinqSamples101/LinqElements.java)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
-|[Generation](#linq---generation-operators)|[generationon.py](src/python/linq-generation.py)|[linq-generation/Program.cs](src/csharp/linq-generation/Program.cs)|
-|[Quantifiers](#linq---quantifiers)|[linq-quantifiers.py](src/python/linq-quantifiers.py)|[linq-quantifiers/Program.cs](src/csharp/linq-quantifiers/Program.cs)|
-|[Aggregate](#linq---aggregate-operators)|[linq-aggregate.py](src/python/linq-aggregate.py)|[linq-aggregate/Program.cs](src/csharp/linq-aggregate/Program.cs)|
-|[Miscellaneous](#linq---miscellaneous-operators)|[linq-miscellaneous.py](src/python/linq-miscellaneous.py)|[linq-miscellaneous/Program.cs](src/csharp/linq-miscellaneous/Program.cs)|
-|[Query](#linq---query-execution)|[linq-query.py](src/python/linq-query.py)|[linq-query/Program.cs](src/csharp/linq-query/Program.cs)|
+|[Filter](#linq1-where---simple-1)|[LinqFilters.java](src/java/LinqSamples101/src/main/java/linq/LinqFilters.java)|[linq-restrictions/Program.cs](src/csharp/linq-restrictions/Program.cs)|
+|[Projection](#linq---projection-operators)|[LinqProjections.java](src/java/LinqSamples101/src/main/java/linq/LinqProjections.java)|[linq-projections/Program.cs](src/csharp/linq-projections/Program.cs)|
+|[Partitioning](#linq---partitioning-operators)|[LinqPartitions.java](src/java/LinqSamples101/src/main/java/linq/LinqPartitions.java)|[linq-partitioning/Program.cs](src/csharp/linq-partitioning/Program.cs)|
+|[Ordering](#linq---ordering-operators)|[LinqOrdering.java](src/java/LinqSamples101/src/main/java/linq/LinqOrdering.java)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
+|[Grouping](#linq---grouping-operators)|[LinqGrouping.java](src/java/LinqSamples101/src/main/java/linq/LinqGrouping.java)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
+|[Set](#linq---set-operators)|[LinqSets.java](src/java/LinqSamples101/src/main/java/linq/LinqSets.java)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
+|[Conversion](#linq---conversion-operators)|[LinqConversion.java](src/java/LinqSamples101/src/main/java/linq/LinqConversion.java)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
+|[Element](#linq---element-operators)|[LinqElements.java](src/java/LinqSamples101/src/main/java/linq/LinqElements.java)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
+|[Generation](#linq---generation-operators)|[LinqGeneration.java](src/java/LinqSamples101/src/main/java/linq/LinqGeneration.java)|[linq-generation/Program.cs](src/csharp/linq-generation/Program.cs)|
+|[Quantifiers](#linq---quantifiers)|[LinqQuantifiers.java](src/java/LinqSamples101/src/main/java/linq/LinqQuantifiers.java)|[linq-quantifiers/Program.cs](src/csharp/linq-quantifiers/Program.cs)|
+|[Aggregate](#linq---aggregate-operators)|[LinqAggregate.java](src/java/LinqSamples101/src/main/java/linq/LinqAggregate.java)|[linq-aggregate/Program.cs](src/csharp/linq-aggregate/Program.cs)|
+|[Miscellaneous](#linq---miscellaneous-operators)|[LinqMiscellaneous.java](src/java/LinqSamples101/src/main/java/linq/LinqMiscellaneous.java)|[linq-miscellaneous/Program.cs](src/csharp/linq-miscellaneous/Program.cs)|
+|[Query](#linq---query-execution)|[LinqQuery.java](src/java/LinqSamples101/src/main/java/linq/LinqQuery.java)|[linq-query/Program.cs](src/csharp/linq-query/Program.cs)|
 
-##  Side-by-side - C# LINQ vs python functional collections
+##  Side-by-side - C# LINQ vs Java functional collections
 
 For a side-by-side comparison, the original **C#** source code is displayed above the equivalent **Java** translation. 
 
   - The **Output** shows the console output of running the **Java** sample. 
   - Java 10 is used here for the use of [Anonymous Classes as shown here](https://stackoverflow.com/a/51210871/168925), although `stream()`, wich is used mostly in these functional examples, used in functional programming, was introduced in Java 8.
   - The Java 10 var keyword is used for brevity of declaring types
+  - Where a problem as not been able to be solved in Java, its implementation has a `print("TODO")` line.
   - Outputs ending with `...` illustrates only a partial response is displayed. 
-  - The source-code for C# and python utils used are included once under the first section they're used in.
+  - The source-code for C# and Java utils used are included once under the first section they're used in.
   - The C# ObjectDumper util used is downloadable from MSDN - [ObjectDumper.zip](http://code.msdn.microsoft.com/Visual-Studio-2008-C-d295cdba/file/46086/1/ObjectDumper.zip)
 
   
@@ -883,13 +884,15 @@ static void Linq20()
 ```
 ```java
 //java
-def linq20():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq20() {
+    var numbers = new int[]{5, 4, 1, 3, 9, 8, 6, 7, 2, 0};
 
-    first3_numbers = numbers[:3]
+    var first3Numbers = Arrays.stream(numbers)
+            .limit(3);
 
-    print("First 3 numbers:")
-    shared.printN(first3_numbers)
+    print("First 3 numbers:");
+    first3Numbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1143,21 +1146,18 @@ static void Linq27()
 ```
 ```java
 //java
-def linq27():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq27() {
+    var numbers = new int[]{5, 4, 1, 3, 9, 8, 6, 7, 2, 0};
 
-    index = 0
+    var firstSmallNumbers = IntStream.range(0, numbers.length)
+            .mapToObj(index -> new Object() {
+                int Num = numbers[index];
+                int Index = index;
+            }).dropWhile(x -> x.Num >= x.Index);
 
-    def digit_greater_equal_to_index(digit):
-        nonlocal index
-        result = digit >= index
-        index += 1
-        return result
-
-    later_numbers = dropwhile(digit_greater_equal_to_index, numbers)
-
-    print("All elements starting from first element less than its position:")
-    shared.printN(later_numbers)
+    print("First numbers not less than their position:");
+    firstSmallNumbers.forEach(x -> print("%d", x.Num));
+}
 ```
 #### Output
 
@@ -1739,15 +1739,17 @@ static void Linq42()
 ```
 ```java
 //java
-def linq42():
-    products = shared.getProductList()
+public static void Linq42() {
+    var products = Data.getProductList();
 
-    sorted_by_category = sorted(products, key=lambda p: p.Category)
-    order_groups = groupby(sorted_by_category, key=lambda p: p.Category)
+    var productCategories = products.stream()
+            .collect(Collectors.groupingBy(p -> p.category, Collectors.toList()));
 
-    for key, items in order_groups:
-        print("Products in the category '%s':" % key)
-        print(list(items))
+    for (var key:productCategories.keySet()) {
+        print("Products in the category '%s':" , key);
+        productCategories.get(key).forEach(System.out::println);
+    }
+}
 ```
 #### Output
 
@@ -1831,13 +1833,15 @@ static void Linq46()
 ```
 ```java
 //java
-def linq46():
-    factors_of300 = [2, 2, 3, 5, 5]
+public static void Linq46() {
+    int[] factorsOf300 = { 2, 2, 3, 5, 5 };
 
-    unique_factors = set(factors_of300)
+    var uniqueFactors = Arrays.stream(factorsOf300).boxed()
+            .distinct();
 
-    print("Prime factors of 300:")
-    shared.printN(unique_factors)
+    print("Prime factors of 300:");
+    uniqueFactors.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1864,13 +1868,16 @@ static void Linq47()
 ```
 ```java
 //java
-def linq47():
-    products = shared.getProductList()
+public static void Linq47() {
+    var products = Data.getProductList();
 
-    category_names = {p.Category for p in products}
+    var productCategories = products.stream()
+            .map(p -> p.category)
+            .distinct();
 
-    print("Category names:")
-    shared.printS(category_names)
+    print("Category names:");
+    productCategories.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -1949,17 +1956,20 @@ static void Linq49()
 ```
 ```java
 //java
-def linq49():
-    products = shared.getProductList()
-    customers = shared.getCustomerList()
+public static void Linq49() {
+    var products = Data.getProductList();
+    var customers = Data.getCustomerList();
 
-    product_first_chars = {p.ProductName[0] for p in products}
-    customer_first_chars = {c.CompanyName[0] for c in customers}
+    var productChars = products.stream().map(p -> p.productName.charAt(0));
+    var customerChars = customers.stream().map(c -> c.companyName.charAt(0));
 
-    unique_first_chars = product_first_chars.union(customer_first_chars)
+    var uniqueFirstChars = Stream
+            .concat(productChars, customerChars)
+            .distinct();
 
-    print("Unique first letters from Product names and Customer names:")
-    shared.printS(unique_first_chars)
+    print("Unique first letters from Product names and Customer names:");
+    uniqueFirstChars.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2096,14 +2106,16 @@ public static void Linq52() {
 ```
 ```java
 //java
-def linq52():
-    numbers_a = [0, 2, 4, 5, 6, 8, 9]
-    numbers_b = [1, 3, 5, 7, 8]
+public static void Linq52() {
+    int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+    int[] numbersB = { 1, 3, 5, 7, 8 };
 
-    a_only_numbers = set(numbers_a).difference((set(numbers_b)))
+    var uniqueNumbers = Arrays.stream(numbersA)
+            .filter(a -> Arrays.stream(numbersB).noneMatch(b -> b == a));
 
-    print("Numbers in first array but not second array:")
-    shared.printN(a_only_numbers)
+    print("Common numbers shared by both arrays:");
+    uniqueNumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2134,17 +2146,18 @@ static void Linq53()
 ```
 ```java
 //java
-def linq53():
-    products = shared.getProductList()
-    customers = shared.getCustomerList()
+public static void Linq53() {
+    var products = Data.getProductList();
+    var customers = Data.getCustomerList();
 
-    product_first_chars = {p.ProductName[0] for p in products}
-    customer_first_chars = {c.CompanyName[0] for c in customers}
+    var uniqueFirstChars = products.stream()
+            .map(p -> p.productName.charAt(0))
+            .filter(p -> customers.stream().map(c -> c.companyName.charAt(0)).noneMatch(c -> c == p))
+            .distinct();
 
-    unique_first_chars = product_first_chars.difference(customer_first_chars)
-
-    print("First letters from Product names, but not from Customer names:")
-    shared.printS(unique_first_chars)
+    print("Common first letters from Product names and Customer names:");
+    uniqueFirstChars.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2215,15 +2228,16 @@ static void Linq55()
 ```
 ```java
 //java
-def linq55():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq55() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    sorted_words = sorted(words)
+    var wordList = Arrays.stream(words)
+            .sorted()
+            .collect(Collectors.toList());
 
-    word_list = list(sorted_words)
-
-    print("The sorted word list:")
-    shared.printN(word_list)
+    print("The sorted word list:");
+    wordList.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2296,13 +2310,14 @@ static void Linq57()
 ```
 ```java
 //java
-def linq57():
-    numbers = [None, 1.0, "two", 3, "four", 5, "six", 7.0]
+public static void Linq57() {
+    var numbers = new Object[]{ null, 1.0, "two", 3, "four", 5, "six", 7.0 };
 
-    floats = (n for n in numbers if isinstance(n, float))
+    var doubles = Arrays.stream(numbers)
+            .filter(Double.class::isInstance);
 
-    print("Numbers stored as floats:")
-    shared.printN(floats)
+    doubles.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -2527,10 +2542,15 @@ static void Linq66()
 ```
 ```java
 //java
-def linq66():
-    numbers = itertools.repeat(7, 10)
+public static void Linq66() {
+    var numbers  = new int[10];
 
-    shared.printN(numbers)
+    Arrays.fill(numbers, 7);
+
+    for (int number : numbers) {
+        System.out.println(number);
+    }
+    }
 ```
 #### Output
 
@@ -2564,12 +2584,14 @@ static void Linq67()
 ```
 ```java
 //java
-def linq67():
-    words = ["believe", "relief", "receipt", "field"]
+public static void Linq67() {
+    var words = new String []{ "believe", "relief", "receipt", "field" };
 
-    i_after_e = any("ei" in w for w in words)
+    var iAfterE = Arrays.stream(words)
+            .anyMatch(w -> w.contains("ei"));
 
-    print("There is a word that contains in the list that contains 'ei': %s" % i_after_e)
+    print("There is a word that contains in the list that contains 'ei': %s",  iAfterE);
+}
 ```
 #### Output
 
@@ -2598,9 +2620,9 @@ static void Linq69()
 ```
 ```java
 //java
-def linq69():
-    pass
-
+public static void Linq69() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -2622,12 +2644,14 @@ static void Linq70()
 ```
 ```java
 //java
-def linq70():
-    numbers = [1, 11, 3, 19, 41, 65, 19]
+public static void Linq70() {
+    var numbers = new int[] { 1, 11, 3, 19, 41, 65, 19 };
 
-    only_odd = all(n % 2 == 1 for n in numbers)
+    var onlyOdd = Arrays.stream(numbers)
+            .allMatch(n -> n % 2 == 1);
 
-    print("The list contains only odd numbers: %s" % only_odd)
+    print("The list contains only odd numbers: %s",  onlyOdd);
+}
 ```
 #### Output
 
@@ -2656,8 +2680,9 @@ static void Linq72()
 ```
 ```java
 //java
-def linq72():
-    pass
+public static void Linq71() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -2684,12 +2709,13 @@ static void Linq73()
 ```
 ```java
 //java
-def linq73():
-    factors_of_300 = [2, 2, 3, 5, 5]
+public static void Linq73() {
+    var primeFactorsOf300 = new int [] { 2, 2, 3, 5, 5 };
 
-    unique_factors = len(set(factors_of_300))
+    var uniqueFactors = Arrays.stream(primeFactorsOf300).distinct().count();
 
-    print("There are %d unique factors of 300." % unique_factors)
+    print("There are %d unique factors of 300.",  uniqueFactors);
+}
 ```
 #### Output
 
@@ -2710,12 +2736,15 @@ static void Linq74()
 ```
 ```java
 //java
-def linq74():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq74() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    odd_numbers = sum(n % 2 == 1 for n in numbers)
+    var oddNumbers = Arrays.stream(numbers)
+            .filter(n -> n % 2 == 1)
+            .count();
 
-    print("There are %d odd numbers in the list." % odd_numbers)
+    print("There are %d odd numbers in the list.", oddNumbers);
+}
 ```
 #### Output
 
@@ -2742,14 +2771,21 @@ static void Linq76()
 ```
 ```java
 //java
-def linq76():
-    customers = shared.getCustomerList()
+public static void Linq75() {
+    var customers = Data.getCustomerList();
 
-    order_counts = map(lambda cust: SimpleNamespace(CustomerID=cust.CustomerID,
-                                                    OrderCount=len(cust.Orders)),
-                       customers)
 
-    shared.print_namespace(order_counts)
+    var orderCounts = customers.stream()
+            .map(c -> new Object() {
+                String customerId = c.customerId;
+                int orderCount = c.orders != null ? c.orders.size() : 0;
+            })
+            .collect(Collectors.toList());
+
+    for (var o : orderCounts) {
+        print("{CustomerId: %s, OrderCount: %d}", o.customerId, o.orderCount);
+    }
+}
 ```
 #### Output
 
@@ -2784,28 +2820,18 @@ static void Linq77()
 ```
 ```java
 //java
-def linq77():
-    products = shared.getProductList()
+public static void Linq77() {
+    var products = Data.getProductList();
 
-    sorted_by_category = sorted(products, key=lambda p: p.Category)
-    grouped_by_category = groupby(sorted_by_category, key=lambda p: p.Category)
+    var categoryCounts = products.stream()
+            .collect(Collectors.groupingBy(p -> p.category,  Collectors.counting()));
 
-    category_counts = map(lambda g: SimpleNamespace(Category=g[0],
-                                                    ProductCount=len(list(g[1]))),
-                          grouped_by_category)
-
-    shared.print_namespace(category_counts)
+    System.out.println((categoryCounts));
+}
 ```
 #### Output
 
-    {Category: Dairy Products, ProductCount: 10}
-    {Category: Grains/Cereals, ProductCount: 7}
-    {Category: Confections, ProductCount: 13}
-    {Category: Seafood, ProductCount: 12}
-    {Category: Condiments, ProductCount: 12}
-    {Category: Meat/Poultry, ProductCount: 6}
-    {Category: Produce, ProductCount: 5}
-    {Category: Beverages, ProductCount: 12}
+    {Grains/Cereals=7, Confections=13, Produce=5, Meat/Poultry=6, Seafood=12, Beverages=12, Dairy Products=10, Condiments=12}
 
 ### linq78: Sum - Simple
 >This sample uses adds all the numbers in an array.
@@ -2822,12 +2848,13 @@ static void Linq78()
 ```
 ```java
 //java
-def linq78():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq78() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    num_sum = sum(numbers)
+    var numSum = Arrays.stream(numbers).sum();
 
-    print("The sum of the numbers is %d." % num_sum)
+    print("The sum of the numbers is %d." , numSum);
+}
 ```
 #### Output
 
@@ -2848,12 +2875,15 @@ static void Linq79()
 ```
 ```java
 //java
-def linq79():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq79() {
+    var  words = new String[] { "cherry", "apple", "blueberry" };
 
-    total_chars = sum(len(w) for w in words)
+    var totalChars = Arrays.stream(words)
+            .mapToInt(w -> w.length())
+            .sum();
 
-    print("There are a total of %d characters in these words." % total_chars)
+    print("There are a total of %d characters in these words.", totalChars);
+}
 ```
 #### Output
 
@@ -2881,29 +2911,19 @@ static void Linq80()
 ```
 ```java
 //java
-def linq80():
-    products = shared.getProductList()
+    public static void Linq80() {
+        var products = Data.getProductList();
 
-    sorted_by_category = sorted(products, key=lambda p: p.Category)
-    grouped_by_category = groupby(sorted_by_category, key=lambda p: p.Category)
+        var categoryStockCounts = products.stream()
+                .collect(Collectors.groupingBy(p -> p.category,
+                        Collectors.summingInt(p -> p.unitsInStock)));
 
-    category_counts = map(lambda g: SimpleNamespace(Category=g[0],
-                                                    TotalUnitsInStock=sum(p.UnitsInStock for p in g[1])),
-                          grouped_by_category)
-
-    shared.print_namespace(category_counts)
-
+        System.out.println((categoryStockCounts));
+    }
 ```
 #### Output
 
-    {Category: Dairy Products, TotalUnitsInStock: 393}
-    {Category: Grains/Cereals, TotalUnitsInStock: 308}
-    {Category: Confections, TotalUnitsInStock: 386}
-    {Category: Seafood, TotalUnitsInStock: 701}
-    {Category: Condiments, TotalUnitsInStock: 507}
-    {Category: Meat/Poultry, TotalUnitsInStock: 165}
-    {Category: Produce, TotalUnitsInStock: 100}
-    {Category: Beverages, TotalUnitsInStock: 559}
+    {Grains/Cereals=308, Confections=386, Produce=100, Meat/Poultry=165, Seafood=701, Beverages=559, Dairy Products=393, Condiments=507}
 
 ### linq81: Min - Simple
 >This sample uses gets the lowest number in an array.
@@ -2920,12 +2940,13 @@ static void Linq81()
 ```
 ```java
 //java
-def linq81():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq81() {
+    var numbers = new int[]{ 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    min_num = min(numbers)
+    var minNum = Arrays.stream(numbers).min().getAsInt();
 
-    print("The minimum number is %d" % min_num)
+    print("The minimum number is %d", minNum);
+}
 ```
 #### Output
 
@@ -2946,12 +2967,16 @@ static void Linq82()
 ```
 ```java
 //java
-def linq82():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq82() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    shortest_word = min(len(w) for w in words)
+    var shortestWord = Arrays.stream(words)
+            .mapToInt(w -> w.length())
+            .min()
+            .getAsInt();
 
-    print("The shortest word is %d characters long." % shortest_word)
+    print("The shortest word is %d characters long.", shortestWord);
+}
 ```
 #### Output
 
@@ -2979,28 +3004,29 @@ static void Linq83()
 ```
 ```java
 //java
-def linq83():
-    products = shared.getProductList()
+public static void Linq83() {
+    var products = Data.getProductList();
 
-    sorted_by_category = sorted(products, key=lambda p: p.Category)
-    grouped_by_category = groupby(sorted_by_category, key=lambda p: p.Category)
+    var groupedByCategoryPrice = products.stream()
+            .collect(Collectors.groupingBy(p -> p.category,
+                    Collectors.minBy(Comparator.comparing(p -> p.unitPrice))));
 
-    category_cheapest_price = map(lambda g: SimpleNamespace(Category=g[0],
-                                                            CheapestPrice=min(p.UnitPrice for p in g[1])),
-                                  grouped_by_category)
-
-    shared.print_namespace(category_cheapest_price)
+    for(var key: groupedByCategoryPrice.keySet()) {
+        var unitPrice = groupedByCategoryPrice.get(key).get().unitPrice;
+        print("{Category: %s, CheapestPrice %.2f}", key, unitPrice);
+    }
+}
 ```
 #### Output
 
-    {Category: Dairy Products, CheapestPrice: 2.5}
-    {Category: Grains/Cereals, CheapestPrice: 7.0}
-    {Category: Confections, CheapestPrice: 9.2}
-    {Category: Seafood, CheapestPrice: 6.0}
-    {Category: Condiments, CheapestPrice: 10.0}
-    {Category: Meat/Poultry, CheapestPrice: 7.45}
-    {Category: Produce, CheapestPrice: 10.0}
-    {Category: Beverages, CheapestPrice: 4.5}
+    {Category: Grains/Cereals, CheapestPrice 7,00}
+    {Category: Confections, CheapestPrice 9,20}
+    {Category: Produce, CheapestPrice 10,00}
+    {Category: Meat/Poultry, CheapestPrice 7,45}
+    {Category: Seafood, CheapestPrice 6,00}
+    {Category: Beverages, CheapestPrice 4,50}
+    {Category: Dairy Products, CheapestPrice 2,50}
+    {Category: Condiments, CheapestPrice 10,00}
 
 ### linq84: Min - Elements
 >This sample gets the products with the lowest price in each category.
@@ -3024,8 +3050,9 @@ static void Linq84()
 ```
 ```java
 //java
-def linq84():
-    pass
+public static void Linq84() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -3053,12 +3080,13 @@ static void Linq85()
 ```
 ```java
 //java
-def linq85():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq85() {
+    var numbers = new int []{ 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    max_num = max(numbers)
+    var maxNum = Arrays.stream(numbers).max().getAsInt();
 
-    print("The maximum number is %d." % max_num)
+    print("The maximum number is %d.", maxNum);
+}
 ```
 #### Output
 
@@ -3079,12 +3107,16 @@ static void Linq86()
 ```
 ```java
 //java
-def linq86():
-    words = ["cherry", "apple", "blueberry"]
+public static void Linq86() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    longest_word = max(len(w) for w in words)
+    var shortestWord = Arrays.stream(words)
+            .mapToInt(w -> w.length())
+            .max()
+            .getAsInt();
 
-    print("The longest word is %d characters long." % longest_word)
+    print("The longest word is %d characters long.", shortestWord);
+}
 ```
 #### Output
 
@@ -3112,18 +3144,17 @@ static void Linq87()
 ```
 ```java
 //java
-def linq87():
-    products = shared.getProductList()
+public static void Linq87() {
+    var products = Data.getProductList();
 
-    sorted_by_category = sorted(products, key=lambda p: p.Category)
-    grouped_by_category = groupby(sorted_by_category, key=lambda p: p.Category)
+    var groupedByCategoryPrice = products.stream()
+            .collect(Collectors.groupingBy(p -> p.category,
+                    Collectors.maxBy(Comparator.comparing(p -> p.unitPrice))));
 
-    category_expensive_price = map(
-        lambda g: SimpleNamespace(Category=g[0],
-                                  MostExpensive=max(p.UnitPrice for p in g[1])),
-        grouped_by_category)
-
-    shared.print_namespace(category_expensive_price)
+    for(var key: groupedByCategoryPrice.keySet()) {
+        var unitPrice = groupedByCategoryPrice.get(key).get().unitPrice;
+        print("{Category: %s, MostExpensive %.2f}", key, unitPrice);
+    }
 ```
 #### Output
 
@@ -3158,8 +3189,9 @@ static void Linq88()
 ```
 ```java
 //java
-def linq88():
-    pass
+public static void Linq88() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -3187,16 +3219,17 @@ static void Linq89()
 ```
 ```java
 //java
-def linq89():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
+public static void Linq89() {
+    var numbers = new int[] { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-    average_num = sum(numbers) / float(len(numbers))
+    var averageNum = Arrays.stream(numbers).average().getAsDouble();
 
-    print("The average number is %f." % average_num)
+    print("The averages number is %.2f." , averageNum);
+}
 ```
 #### Output
 
-    The average number is 4.5.
+    The averages number is 4,50.
 
 ### linq90: Average - Projection
 >This sample gets the average length of the words in the array.
@@ -3213,11 +3246,16 @@ static void Linq90()
 ```
 ```java
 //java
-def linq90():
-    words = ["cherry", "apple", "blueberry"]
-    average_length = sum(len(w) for w in words) / float(len(words))
+public static void Linq90() {
+    var words = new String[] { "cherry", "apple", "blueberry" };
 
-    print("The average word length is %f characters." % average_length)
+    var averageWordLength = Arrays.stream(words)
+            .mapToInt(w -> w.length())
+            .average()
+            .getAsDouble();
+
+    print("The shortest word is %f characters long.", averageWordLength);
+}
 ```
 #### Output
 
@@ -3245,8 +3283,9 @@ static void Linq91()
 ```
 ```java
 //java
-def linq91():
-    pass
+    public static void Linq91() {
+        print("TODO");
+    }
 ```
 #### Output
 
@@ -3274,15 +3313,15 @@ static void Linq92()
 ```
 ```java
 //java
-def linq92():
-    doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
+public static void Linq92() {
+    var doubles = new double[] { 1.7, 2.3, 1.9, 4.1, 2.9 };
 
-    product = reduce(operator.mul, doubles)
+    var product = Arrays.stream(doubles)
+            .reduce((runningTotal, nextFactor) -> runningTotal * nextFactor)
+            .getAsDouble();
 
-    #or
-    #product = reduce(lambda running_product, next_factor: running_product * next_factor, doubles)
-
-    print("Total product of all numbers: %f" % product)
+    print("Total product of all numbers: %f" , product);
+}
 ```
 #### Output
 
@@ -3308,17 +3347,18 @@ static void Linq93()
 ```
 ```java
 //java
-def linq93():
-    start_balance = 100.0
+public static void Linq93() {
+    int startBalance = 100;
 
-    attempted_withdrawals = [20, 10, 40, 50, 10, 70, 30]
+    var attemptedWithdrawals = new int[]{ 20, 10, 40, 50, 10, 70, 30 };
 
-    end_balance = reduce(
-        lambda runningBalance, nextWithDrawal: runningBalance - nextWithDrawal if nextWithDrawal <= runningBalance else runningBalance,
-        attempted_withdrawals,
-        start_balance)
+    var endBalance = Arrays.stream(attemptedWithdrawals)
+            .reduce(startBalance,
+                    (balance, nextWithdrawal) ->
+                            (nextWithdrawal <= balance) ? (balance - nextWithdrawal) : balance);
 
-    print("Ending balance: %f" % end_balance)
+    print("Ending balance: %d",  endBalance);
+}
 ```
 #### Output
 
@@ -3345,14 +3385,18 @@ static void Linq94()
 ```
 ```java
 //java
-def linq94():
-    numbers_a = [0, 2, 4, 5, 6, 8, 9]
-    numbers_b = [1, 3, 5, 7, 8]
+public static void Linq94() {
+    int[] numbersA = { 0, 2, 4, 5, 6, 8, 9 };
+    int[] numbersB = { 1, 3, 5, 7, 8 };
 
-    all_numbers = numbers_a + numbers_b
+    var allNumbers = Stream
+            .concat(
+                    Arrays.stream(numbersA).boxed(),
+                    Arrays.stream(numbersB).boxed());
 
-    print("All numbers from both arrays:")
-    shared.printN(all_numbers)
+    print("All numbers from both arrays:");
+    allNumbers.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -3390,17 +3434,19 @@ static void Linq95()
 ```
 ```java
 //java
-def linq95():
-    products = shared.getProductList()
-    customers = shared.getCustomerList()
+public static void Linq95() {
+    var products = Data.getProductList();
+    var customers = Data.getCustomerList();
 
-    customer_names = [p.ProductName for p in products]
-    product_names = [c.CompanyName for c in customers]
+    var customerNames = customers.stream().map(c -> c.companyName);
+    var productNames = products.stream().map(p -> p.productName);
 
-    all_names = customer_names + product_names
 
-    print("Customer and product names:")
-    shared.printS(all_names)
+    var allNames = Stream.concat(customerNames, productNames);
+
+    print("Customer and product names:");
+    allNames.forEach(System.out::println);
+}
 ```
 #### Output
 
@@ -3429,13 +3475,14 @@ static void Linq96()
 ```
 ```java
 //java
-def linq96():
-    words_a = ["cherry", "apple", "blueberry"]
-    words_b = ["cherry", "apple", "blueberry"]
+public static void Linq96() {
+    var wordsA = new String[] { "cherry", "apple", "blueberry" };
+    var wordsB = new String[] { "cherry", "apple", "blueberry" };
 
-    match = words_a == words_b
+    var equal = Arrays.equals(wordsA, wordsB);
 
-    print("The sequences match: %s" % match)
+    print("The sequences match: %s", equal);
+}
 ```
 #### Output
 
@@ -3457,13 +3504,14 @@ static void Linq97()
 ```
 ```java
 //java
-def linq97():
-    words_a = ["cherry", "apple", "blueberry"]
-    words_b = ["apple", "blueberry", "cherry"]
+public static void Linq97() {
+    var wordsA = new String[] { "cherry", "apple", "blueberry" };
+    var wordsB = new String[]  { "apple", "blueberry", "cherry" };
 
-    match = words_a == words_b
+    var equal = Arrays.equals(wordsA, wordsB);
 
-    print("The sequences match: %s" % match)
+    print("The sequences match: %s", equal);
+}
 ```
 #### Output
 
@@ -3493,20 +3541,9 @@ static void Linq99()
 ```
 ```java
 //java
-def linq99():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-
-    i = 0
-
-    def add_to_i(n):
-        nonlocal i
-        i = i + 1
-        return n
-
-    q = map(add_to_i, numbers)
-
-    for v in q:
-        print("v = %d, i = %d" % (v, i))
+public static void Linq99() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -3542,20 +3579,9 @@ static void Linq100()
 ```
 ```java
 //java
-def linq100():
-    numbers = [5, 4, 1, 3, 9, 8, 6, 7, 2, 0]
-
-    i = 0
-
-    def add_to_i(n):
-        nonlocal i
-        i = i + 1
-        return n
-
-    q = list(map(add_to_i, numbers))
-
-    for v in q:
-        print("v = %d, i = %d" % (v, i))
+public static void Linq100() {
+    print("TODO");
+}
 ```
 #### Output
 
@@ -3599,8 +3625,9 @@ static void Linq101()
 ```
 ```java
 //java
-def linq101():
-    pass
+public static void Linq101() {
+    print("TODO");
+}
 ```
 #### Output
 
