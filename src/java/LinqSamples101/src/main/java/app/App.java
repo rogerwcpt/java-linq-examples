@@ -2,6 +2,7 @@ package app;
 
 import linq.LinqBase;
 
+import static linq.LinqConversion.*;
 import static linq.LinqFilters.*;
 import static linq.LinqGrouping.*;
 import static linq.LinqOrdering.*;
@@ -72,6 +73,10 @@ public class App {
 //        Linq53();
 
         // Conversion
+//        Linq54();
+//        Linq55();
+        Linq56();
+        Linq57();
     }
 
 

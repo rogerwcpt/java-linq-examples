@@ -31,18 +31,18 @@ For Example
 ||`OrderBy(lambda)`|`sorted(lambda)`||
 ||`OrderByDescending`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|
 ||`OrderByDescending(lambda)`|`sorted(Comparator.comparing(lamda, Comparator.reverseOrder()))`|
-||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda));`|
+||`ThenBy`|`sorted(Comparator).comparing(lambda).thenComparing(lambda))`|
 ||`ThenByDescending`|`sorted(Comparator).comparing(lambda).thenComparing(lambda), Comparator.reverseOrder()))`|
 ||`Reverse`|`collect(Collectors.toCollection(LinkedList::new)).descendingIterator();`|
-|**Grouping**|`GroupBy`|`.collect(Collectors.groupingBy(lamnda, Collectors.toList()));`|
+|**Grouping**|`GroupBy`|`.collect(Collectors.groupingBy(lamnda, Collectors.toList()))`|
 |**Sets**|`Distinct`|`distinct`|
 ||`Union`|`Stream.Concat(stream1, stream2).distinct()`|
-||`Interect`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).anyMatch(b -> b == a));`|
-||`Except`|`Arrays.stream(numbersA).filter(a ->  Arrays.stream(numbersB).nonMatch(b -> b == a));`|
-|**Conversion**|`ToArray`|`list`|
-||`ToList`|`list`|
-||`ToDictionary`|`{key:value for (key,value) in sequence}`|or use `dict` in conjuction with `zip`
-||`OfType`|`'filter` using `isinstance` as predicate|
+||`Interect`|`streamA.filter(a ->  streamB.anyMatch(b -> b == a))`|
+||`Except`|`streamA.filter(a ->  streamB.nonMatch(b -> b == a))`|
+|**Conversion**|`ToArray`|`toArray`|
+||`ToList`|`collect(Collectors.list)`|
+||`ToDictionary`|`collect(Collectors.toMap(lambdaKey, lambdaValue))`|
+||`OfType`|`filter(Type.class::isInstance)`|
 |**Element**|`First`|`next`|
 ||`First(lambda)`|`next(list)`|
 ||`FirstOrDefault`|`next(list)`|
@@ -75,7 +75,7 @@ For Example
 |[Ordering](#linq---ordering-operators)|[LinqOrdering.java](/src/java/LinqSamples101/src/main/java/linq/LinqOrdering.java)|[linq-ordering/Program.cs](src/csharp/linq-ordering/Program.cs)|
 |[Grouping](#linq---grouping-operators)|[LinqGrouping.java](/src/java/LinqSamples101/src/main/java/linq/LinqGrouping.java)|[linq-grouping/Program.cs](src/csharp/linq-grouping/Program.cs)|
 |[Set](#linq---set-operators)|[LinqSets.java](/src/java/LinqSamples101/src/main/java/linq/LinqSets.java)|[linq-sets/Program.cs](src/csharp/linq-sets/Program.cs)|
-|[Conversion](#linq---conversion-operators)|[linq-conversion.py](src/python/linq-conversion.py)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
+|[Conversion](#linq---conversion-operators)|[LinqConversion.java](/src/java/LinqSamples101/src/main/java/linq/LinqConversion.java)|[linq-conversion/Program.cs](src/csharp/linq-conversion/Program.cs)|
 |[Element](#linq---element-operators)|[linq-element.py](src/python/linq-element.py)|[linq-element/Program.cs](src/csharp/linq-element/Program.cs)|
 |[Generation](#linq---generation-operators)|[generationon.py](src/python/linq-generation.py)|[linq-generation/Program.cs](src/csharp/linq-generation/Program.cs)|
 |[Quantifiers](#linq---quantifiers)|[linq-quantifiers.py](src/python/linq-quantifiers.py)|[linq-quantifiers/Program.cs](src/csharp/linq-quantifiers/Program.cs)|
@@ -2177,18 +2177,17 @@ static void Linq54()
 ```
 ```java
 //java
-def linq54():
-    doubles = [1.7, 2.3, 1.9, 4.1, 2.9]
-  
-    sorted_doubles = sorted(doubles, reverse=True)
+public static void Linq54() {
+    var list = new double[] { 1.7, 2.3, 1.9, 4.1, 2.9 };
 
-    doubles_array = list(sorted_doubles)
-  
-    print("Every other double from highest to lowest:")
-    d = 0
-    while d < len(doubles_array):
-        print(doubles_array[d])
-        d += 2
+    var sortedDoubles = Arrays.stream(list).boxed()
+            .sorted(Comparator.reverseOrder())
+            .toArray();
+
+    print("Every other double from highest to lowest:");
+    for (int i = 0; i < sortedDoubles.length - 1; i += 2) {
+        System.out.println(sortedDoubles[i]);
+    }
 ```
 #### Output
 
@@ -2253,14 +2252,28 @@ static void Linq56()
 ```
 ```java
 //java
-def linq56():
-    score_records = [{'Name': "Alice", 'Score': 50},
-                     {'Name': "Bob", 'Score': 40},
-                     {'Name': "Cathy", 'Score': 45}]
+public static void Linq56() {
 
-    score_records_dict = {s['Name']:s['Score'] for s in score_records}
+    class StudentScore {
+        public String name;
+        public int score;
 
-    print("Bob's score: %s" % score_records_dict["Bob"])
+        public StudentScore(String name, int score) {
+            this.name = name;
+            this.score = score;
+        }
+    }
+
+    var scoreRecords =new ArrayList<StudentScore>();
+    scoreRecords.add(new StudentScore("Alice", 50));
+    scoreRecords.add(new StudentScore("Bob", 40));
+    scoreRecords.add(new StudentScore("Cathy", 45));
+
+    var scoreRecordsMap= scoreRecords.stream()
+            .collect(Collectors.toMap(s -> s.name, s -> s.score));
+
+    print("Bob's score: %s", scoreRecordsMap.get("Bob"));
+}
 ```
 #### Output
 
