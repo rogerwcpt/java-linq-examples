@@ -58,9 +58,9 @@ For Example
 ||`Min`|`min`|
 ||`Max`|`max`|
 ||`Avg`|||
-||`Sum(predicate)`|`sum(predicate)`|
-||`Min(predicate)`|`min(predicate)`|
-||`Max(predicate)`|`max(predicate)`|
+||`Sum(predicate)`|`filter(predicate).collect(Collectors.summingInt)`|
+||`Min(predicate)`|`filter(predicate).collect(Collectors.minBy)`|
+||`Max(predicate)`|`filter(predicate).collect(Collectors.maxBy)`|
 ||`Avg(predicate)`|
 ||`Aggregate`|`reduce(lambda)`|
 ||`Aggregate(seed, lamda)`|`reduce(lambsa,seed)`|
