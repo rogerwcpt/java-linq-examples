@@ -5,7 +5,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
 //        Filters
-        linq.LinqFilters.Linq1();
+//        linq.LinqFilters.Linq1();
 //        linq.LinqFilters.Linq2();
 //        linq.LinqFilters.Linq3();
 //        linq.LinqFilters.Linq4();
@@ -21,6 +21,11 @@ public class App {
 //        linq.LinqProjections.Linq12();
 //        linq.LinqProjections.Linq13();
 //        linq.LinqProjections.Linq14();
+//        linq.LinqProjections.Linq15();
+//        linq.LinqProjections.Linq16();
+//        linq.LinqProjections.Linq17();
+//        linq.LinqProjections.Linq18();
+//        linq.LinqProjections.Linq19();
 
 //        Partitions
 //        linq.LinqPartitions.Linq20();
