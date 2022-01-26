@@ -140,6 +140,7 @@ public class LinqProjections extends LinqBase {
 
     public static void Linq16() {
         List<Customer> customers = Data.getCustomerList();
+        Date comparisonDate = new GregorianCalendar(1998, Calendar.JANUARY, 1).getTime();
         customers.stream()
                 .filter(c -> c.orders != null && c.orders.size() > 0)
                 .flatMap(c -> c.orders.stream().map(o -> new Object(){
@@ -147,7 +148,7 @@ public class LinqProjections extends LinqBase {
                     final Integer orderId = o.orderId;
                     final Date orderDate = o.orderDate;
                 }))
-                .filter(o -> o.orderDate.compareTo(new GregorianCalendar(1998, Calendar.JANUARY, 1).getTime()) >= 0 )
+                .filter(o -> o.orderDate.compareTo(comparisonDate) >= 0 )
                 .forEach(o -> System.out.println("{CustomerId: " + o.customerID +
                         ", OrderId: " + o.orderId +
                         ", OrderDate: " + o.orderDate));
