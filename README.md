@@ -659,7 +659,17 @@ static void Linq14()
 ```java
 //java
 public static void Linq14() {
-    print("TODO");
+    var numbersA = new Integer[] { 0, 2, 4, 5, 6, 8, 9 };
+    var numbersB = new Integer[]{ 1, 3, 5, 7, 8 };
+    
+    System.out.println("Pairs where a < b:");
+    
+    Arrays.stream(numbersA)
+            .flatMap(a -> Arrays.stream(numbersB).map(b -> new Object(){
+                Integer numberA = a; Integer numberB = b;
+            }))
+            .filter(pair -> pair.numberA < pair.numberB)
+            .forEach(pair -> System.out.println(pair.numberA + " is less than "+ pair.numberB));
 }
 ```
 #### Output
@@ -707,7 +717,18 @@ static void Linq15()
 ```java
 //java
 public static void Linq15() {
-    print("TODO");
+    List<Customer> customers = Data.getCustomerList();
+    customers.stream()
+            .filter(c -> c.orders != null)
+            .flatMap(c -> c.orders.stream().map(o -> new Object(){
+                    final String customerID = c.customerId;
+                    final Integer orderId = o.orderId;
+                    final Double total = o.total;
+                }))
+            .filter(o -> o.total < 500.00)
+            .forEach(o -> System.out.println("{CustomerId: " + o.customerID +
+                                                ", OrderId: " + o.orderId +
+                                                ", Total: " + o.total));
 }
 ```
 #### Output
@@ -743,7 +764,19 @@ static void Linq16()
 ```java
 //java
 public static void Linq16() {
-    print("TODO");
+    List<Customer> customers = Data.getCustomerList();
+    Date comparisonDate = new GregorianCalendar(1998, 1, 1).getTime();
+    customers.stream()
+            .filter(c -> c.orders != null && c.orders.size() > 0)
+            .flatMap(c -> c.orders.stream().map(o -> new Object(){
+                final String customerID = c.customerId;
+                final Integer orderId = o.orderId;
+                final Date orderDate = o.orderDate;
+            }))
+            .filter(o -> o.orderDate.compareTo(comparisonDate) >= 0 )
+            .forEach(o -> System.out.println("{CustomerId: " + o.customerID +
+                    ", OrderId: " + o.orderId +
+                    ", OrderDate: " + o.orderDate));
 }
 ```
 #### Output
@@ -780,7 +813,18 @@ static void Linq17()
 ```java
 //java
 public static void Linq17() {
-    print("TODO");
+    List<Customer> customers = Data.getCustomerList();
+    customers.stream()
+            .filter(c -> c.orders != null && c.orders.size() > 0)
+            .flatMap(c -> c.orders.stream().map(o -> new Object(){
+                final String customerID = c.customerId;
+                final Integer orderId = o.orderId;
+                final Double total = o.total;
+            }))
+            .filter(o -> o.total > 2000 )
+            .forEach(o -> System.out.println("{CustomerId: " + o.customerID +
+                    ", OrderId: " + o.orderId +
+                    ", Total: " + o.total));
 }
 ```
 #### Output
@@ -818,7 +862,24 @@ static void Linq18()
 ```java
 //java
 public static void Linq18() {
-    print("TODO");
+    List<Customer> customers = Data.getCustomerList();
+        var cutoffDate = new GregorianCalendar(1997, 1, 1).getTime();
+        customers.stream()
+                .filter(c -> c.orders != null)
+                .filter(c -> Objects.equals(c.region, "WA"))
+                .flatMap(c -> c.orders.stream().map(o -> new Object(){
+                    final Customer customer = c;
+                    final Order order = o;
+                }))
+                .filter(o -> o.order.orderDate.compareTo(cutoffDate) >= 0 )
+                .map(o -> new Object(){
+                    final String customerID = o.customer.customerId;
+                    final Integer orderId = o.order.orderId;
+                    final String region = o.customer.region;
+                })
+                .forEach(o -> System.out.println("{CustomerId: " + o.customerID +
+                        ", OrderId: " + o.orderId +
+                        ", Region: " + o.region));
 }
 ```
 #### Output
@@ -848,7 +909,17 @@ public void Linq19()
 ```java
 //java
 public static void Linq19() {
-    print("TODO");
+    var customers = new ArrayList<>(Data.getCustomerList());
+    IntStream.range(0, customers.size())
+            .filter(i -> customers.get(i).orders != null)
+            .mapToObj(i -> customers.get(i).orders.stream()
+                        .map(o -> new Object(){
+                                final int index = i +1;
+                                final Integer orderID = o.orderId;
+            }))
+            .flatMap(s -> s)
+            .forEach(o -> System.out.println("Customer " + o.index +
+                                                " has an order with OrderID " + o.orderID));
 }
 ```
 #### Output
